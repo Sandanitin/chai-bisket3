@@ -285,44 +285,36 @@ const Navbar = ({ cartCount }: NavbarProps) => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-[#120a07] border-b border-[#2d1a11] shadow-lg animate-in slide-in-from-top-2 duration-200 z-[60]">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-[#120a07] border-b border-[#2d1a11] shadow-lg animate-in slide-in-from-top-2 duration-200 z-[100] rounded-b-3xl">
           <div className="container px-4 py-3 flex flex-col space-y-3">
-            <div
-              className="py-3 text-[#f5eddc]/90 hover:text-[#ffd9a0] transition-colors font-medium border-b border-[#2d1a11] cursor-pointer"
-              onClick={() => {
-                setIsMenuOpen(false);
-                router.push('#menu');
-              }}
+            <a
+              href="#menu"
+              className="block py-3 text-[#f5eddc]/90 hover:text-[#ffd9a0] transition-colors font-medium border-b border-[#2d1a11] cursor-pointer"
+              onClick={() => setIsMenuOpen(false)}
             >
               Menu
-            </div>
-            <div
-              className="py-3 text-[#f5eddc]/90 hover:text-[#ffd9a0] transition-colors font-medium border-b border-[#2d1a11] cursor-pointer"
-              onClick={() => {
-                setIsMenuOpen(false);
-                router.push('#our-story');
-              }}
+            </a>
+            <a
+              href="#our-story"
+              className="block py-3 text-[#f5eddc]/90 hover:text-[#ffd9a0] transition-colors font-medium border-b border-[#2d1a11] cursor-pointer"
+              onClick={() => setIsMenuOpen(false)}
             >
               Our Story
-            </div>
-            <div
-              className="py-3 text-[#f5eddc]/90 hover:text-[#ffd9a0] transition-colors font-medium border-b border-[#2d1a11] cursor-pointer"
-              onClick={() => {
-                setIsMenuOpen(false);
-                router.push('#location');
-              }}
+            </a>
+            <a
+              href="#location"
+              className="block py-3 text-[#f5eddc]/90 hover:text-[#ffd9a0] transition-colors font-medium border-b border-[#2d1a11] cursor-pointer"
+              onClick={() => setIsMenuOpen(false)}
             >
               Location
-            </div>
-            <div
-              className="py-3 text-[#f5eddc]/90 hover:text-[#ffd9a0] transition-colors font-medium border-b border-[#2d1a11] cursor-pointer"
-              onClick={() => {
-                setIsMenuOpen(false);
-                router.push('#contact');
-              }}
+            </a>
+            <a
+              href="#contact"
+              className="block py-3 text-[#f5eddc]/90 hover:text-[#ffd9a0] transition-colors font-medium border-b border-[#2d1a11] cursor-pointer"
+              onClick={() => setIsMenuOpen(false)}
             >
               Contact
-            </div>
+            </a>
           </div>
         </div>
       )}

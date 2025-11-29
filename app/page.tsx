@@ -351,41 +351,41 @@ export default function Page() {
 
             <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Button
-                className="py-5 sm:py-6 px-6 sm:px-8 text-base font-medium rounded-xl shadow-lg hover:shadow-amber-500/20 transition-all duration-300"
+                className="py-5 sm:py-6 px-6 sm:px-8 text-base font-medium rounded-full shadow-lg hover:shadow-amber-500/20 transition-all duration-300"
                 size="lg"
-                onClick={() => router.push('#menu')}
+                asChild
               >
-                <span className="flex items-center justify-center sm:justify-start gap-2">
+                <a href="#menu" className="flex items-center justify-center sm:justify-start gap-2">
                   <Utensils className="h-5 w-5" />
                   Explore Our Menu
-                </span>
+                </a>
               </Button>
               <Button
                 variant="outline"
-                className="py-5 sm:py-6 px-6 sm:px-8 text-base font-medium rounded-xl transition-all duration-300"
+                className="py-5 sm:py-6 px-6 sm:px-8 text-base font-medium rounded-full transition-all duration-300"
                 size="lg"
-                onClick={() => router.push('#order-options')}
+                asChild
               >
-                <span className="flex items-center justify-center sm:justify-start gap-2">
+                <a href="#order-options" className="flex items-center justify-center sm:justify-start gap-2">
                   <Phone className="h-5 w-5" />
                   Order Now
-                </span>
+                </a>
               </Button>
             </div>
 
             <div className="mt-6">
               <Button
-                className="py-4 px-6 text-base font-medium rounded-xl shadow-lg bg-gradient-to-r from-[#f0a35c] to-[#d97a3a] hover:from-[#f5b97a] hover:to-[#e08a4a] transition-all duration-300 transform hover:scale-105"
+                className="py-4 px-6 text-base font-medium rounded-full shadow-lg bg-gradient-to-r from-[#f0a35c] to-[#d97a3a] hover:from-[#f5b97a] hover:to-[#e08a4a] transition-all duration-300 transform hover:scale-105"
                 size="lg"
-                onClick={() => router.push('#specials')}
+                asChild
               >
-                <span className="flex items-center justify-center gap-2">
+                <a href="#specials" className="flex items-center justify-center gap-2">
                   <span className="relative flex h-3 w-3">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
                   </span>
                   Today&apos;s Special
-                </span>
+                </a>
               </Button>
             </div>
 
