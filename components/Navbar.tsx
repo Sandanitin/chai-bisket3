@@ -287,34 +287,42 @@ const Navbar = ({ cartCount }: NavbarProps) => {
       {isMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-[#120a07] border-b border-[#2d1a11] shadow-lg animate-in slide-in-from-top-2 duration-200 z-[60]">
           <div className="container px-4 py-3 flex flex-col space-y-3">
-            <Link
-              href="#menu"
+            <div
               className="py-3 text-[#f5eddc]/90 hover:text-[#ffd9a0] transition-colors font-medium border-b border-[#2d1a11] cursor-pointer"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={() => {
+                setIsMenuOpen(false);
+                router.push('#menu');
+              }}
             >
               Menu
-            </Link>
-            <Link
-              href="#our-story"
+            </div>
+            <div
               className="py-3 text-[#f5eddc]/90 hover:text-[#ffd9a0] transition-colors font-medium border-b border-[#2d1a11] cursor-pointer"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={() => {
+                setIsMenuOpen(false);
+                router.push('#our-story');
+              }}
             >
               Our Story
-            </Link>
-            <Link
-              href="#location"
+            </div>
+            <div
               className="py-3 text-[#f5eddc]/90 hover:text-[#ffd9a0] transition-colors font-medium border-b border-[#2d1a11] cursor-pointer"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={() => {
+                setIsMenuOpen(false);
+                router.push('#location');
+              }}
             >
               Location
-            </Link>
-            <Link
-              href="#contact"
+            </div>
+            <div
               className="py-3 text-[#f5eddc]/90 hover:text-[#ffd9a0] transition-colors font-medium border-b border-[#2d1a11] cursor-pointer"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={() => {
+                setIsMenuOpen(false);
+                router.push('#contact');
+              }}
             >
               Contact
-            </Link>
+            </div>
           </div>
         </div>
       )}
