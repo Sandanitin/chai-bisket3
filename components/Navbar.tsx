@@ -90,7 +90,7 @@ const Navbar = ({ cartCount }: NavbarProps) => {
 
   // Close mobile menu when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: Event) => {
       const navbar = document.getElementById('navbar');
       if ((isMenuOpen || isAuthOpen) && navbar && !navbar.contains(event.target as Node)) {
         setIsMenuOpen(false);
@@ -99,8 +99,11 @@ const Navbar = ({ cartCount }: NavbarProps) => {
     };
 
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
     };
   }, [isMenuOpen, isAuthOpen]);
 
