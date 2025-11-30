@@ -22,6 +22,7 @@ export default function CheckoutPage() {
   const [isClient, setIsClient] = useState(false);
   const [activeStep, setActiveStep] = useState(1);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [orderType, setOrderType] = useState<'pickup' | 'delivery'>('delivery');
 
   // Form states
   const [deliveryInfo, setDeliveryInfo] = useState({
@@ -48,11 +49,12 @@ export default function CheckoutPage() {
 
     // Check if user is logged in (optional now)
     const user = localStorage.getItem('user');
-    // if (!user) {
-    //   // User not logged in, redirect to login
-    //   router.push('/login?returnUrl=/checkout');
-    //   return;
-    // }
+
+    // Load order type
+    const savedOrderType = localStorage.getItem('orderType');
+    if (savedOrderType === 'pickup' || savedOrderType === 'delivery') {
+      setOrderType(savedOrderType);
+    }
 
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
@@ -112,7 +114,7 @@ export default function CheckoutPage() {
   };
 
   const calculateDeliveryFee = () => {
-    return 2.99;
+    return orderType === 'delivery' ? 2.99 : 0;
   };
 
   const calculateTotal = () => {
@@ -127,10 +129,14 @@ export default function CheckoutPage() {
     if (!deliveryInfo.email.trim()) errors.email = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(deliveryInfo.email)) errors.email = "Email is invalid";
     if (!deliveryInfo.phone.trim()) errors.phone = "Phone is required";
-    if (!deliveryInfo.address.trim()) errors.address = "Address is required";
-    if (!deliveryInfo.city.trim()) errors.city = "City is required";
-    if (!deliveryInfo.state.trim()) errors.state = "State is required";
-    if (!deliveryInfo.zipCode.trim()) errors.zipCode = "ZIP Code is required";
+
+    // Only validate address if delivery is selected
+    if (orderType === 'delivery') {
+      if (!deliveryInfo.address.trim()) errors.address = "Address is required";
+      if (!deliveryInfo.city.trim()) errors.city = "City is required";
+      if (!deliveryInfo.state.trim()) errors.state = "State is required";
+      if (!deliveryInfo.zipCode.trim()) errors.zipCode = "ZIP Code is required";
+    }
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -301,11 +307,11 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Checkout Steps */}
           <div className="lg:col-span-2">
-            <div className="bg-[#120a07] rounded-2xl shadow-sm border border-[#2d1a11] p-6 mb-6">
-              <div className="flex items-center justify-between mb-8">
+            <div className="bg-[#120a07] rounded-2xl shadow-sm border border-[#2d1a11] p-4 md:p-6 mb-6">
+              <div className="flex items-center justify-between mb-8 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
                 {[1, 2, 3].map((step) => (
-                  <div key={step} className="flex items-center">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${activeStep === step
+                  <div key={step} className="flex items-center min-w-fit">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${activeStep === step
                       ? 'bg-[#c87534] text-[#120a06]'
                       : activeStep > step
                         ? 'bg-[#1a100b] text-[#c87534] border border-[#c87534]/30'
@@ -320,13 +326,13 @@ export default function CheckoutPage() {
                       )}
                     </div>
                     <div className="ml-2">
-                      <div className={`text-sm font-medium ${activeStep === step ? 'text-[#c87534]' : activeStep > step ? 'text-[#c87534]' : 'text-[#f5eddc]/30'
+                      <div className={`text-xs md:text-sm font-medium whitespace-nowrap ${activeStep === step ? 'text-[#c87534]' : activeStep > step ? 'text-[#c87534]' : 'text-[#f5eddc]/30'
                         }`}>
                         {step === 1 ? 'Delivery' : step === 2 ? 'Payment' : 'Confirm'}
                       </div>
                     </div>
                     {step < 3 && (
-                      <div className={`w-16 h-0.5 mx-4 ${activeStep > step ? 'bg-[#c87534]/50' : 'bg-[#2d1a11]'
+                      <div className={`w-4 md:w-16 h-0.5 mx-2 md:mx-4 ${activeStep > step ? 'bg-[#c87534]/50' : 'bg-[#2d1a11]'
                         }`}></div>
                     )}
                   </div>
@@ -337,8 +343,17 @@ export default function CheckoutPage() {
               {activeStep === 1 && (
                 <div>
                   <h2 className="text-xl font-semibold text-[#f5eddc] mb-6 flex items-center gap-2">
-                    <MapPin className="h-5 w-5 text-[#c87534]" />
-                    Delivery Information
+                    {orderType === 'pickup' ? (
+                      <>
+                        <User className="h-5 w-5 text-[#c87534]" />
+                        Pickup Information
+                      </>
+                    ) : (
+                      <>
+                        <MapPin className="h-5 w-5 text-[#c87534]" />
+                        Delivery Information
+                      </>
+                    )}
                   </h2>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -381,58 +396,63 @@ export default function CheckoutPage() {
                       />
                       {formErrors.phone && <p className="text-red-500 text-xs mt-1">{formErrors.phone}</p>}
                     </div>
-                    <div>
-                      <label htmlFor="address" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Address</label>
-                      <input
-                        type="text"
-                        id="address"
-                        name="address"
-                        value={deliveryInfo.address}
-                        onChange={handleDeliveryInfoChange}
-                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.address ? 'border-red-500' : 'border-[#2d1a11]'}`}
-                        placeholder="123 Main St"
-                      />
-                      {formErrors.address && <p className="text-red-500 text-xs mt-1">{formErrors.address}</p>}
-                    </div>
-                    <div>
-                      <label htmlFor="city" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">City</label>
-                      <input
-                        type="text"
-                        id="city"
-                        name="city"
-                        value={deliveryInfo.city}
-                        onChange={handleDeliveryInfoChange}
-                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.city ? 'border-red-500' : 'border-[#2d1a11]'}`}
-                        placeholder="New York"
-                      />
-                      {formErrors.city && <p className="text-red-500 text-xs mt-1">{formErrors.city}</p>}
-                    </div>
-                    <div>
-                      <label htmlFor="state" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">State</label>
-                      <input
-                        type="text"
-                        id="state"
-                        name="state"
-                        value={deliveryInfo.state}
-                        onChange={handleDeliveryInfoChange}
-                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.state ? 'border-red-500' : 'border-[#2d1a11]'}`}
-                        placeholder="NY"
-                      />
-                      {formErrors.state && <p className="text-red-500 text-xs mt-1">{formErrors.state}</p>}
-                    </div>
-                    <div>
-                      <label htmlFor="zipCode" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">ZIP Code</label>
-                      <input
-                        type="text"
-                        id="zipCode"
-                        name="zipCode"
-                        value={deliveryInfo.zipCode}
-                        onChange={handleDeliveryInfoChange}
-                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.zipCode ? 'border-red-500' : 'border-[#2d1a11]'}`}
-                        placeholder="10001"
-                      />
-                      {formErrors.zipCode && <p className="text-red-500 text-xs mt-1">{formErrors.zipCode}</p>}
-                    </div>
+
+                    {orderType === 'delivery' && (
+                      <>
+                        <div>
+                          <label htmlFor="address" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Address</label>
+                          <input
+                            type="text"
+                            id="address"
+                            name="address"
+                            value={deliveryInfo.address}
+                            onChange={handleDeliveryInfoChange}
+                            className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.address ? 'border-red-500' : 'border-[#2d1a11]'}`}
+                            placeholder="123 Main St"
+                          />
+                          {formErrors.address && <p className="text-red-500 text-xs mt-1">{formErrors.address}</p>}
+                        </div>
+                        <div>
+                          <label htmlFor="city" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">City</label>
+                          <input
+                            type="text"
+                            id="city"
+                            name="city"
+                            value={deliveryInfo.city}
+                            onChange={handleDeliveryInfoChange}
+                            className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.city ? 'border-red-500' : 'border-[#2d1a11]'}`}
+                            placeholder="New York"
+                          />
+                          {formErrors.city && <p className="text-red-500 text-xs mt-1">{formErrors.city}</p>}
+                        </div>
+                        <div>
+                          <label htmlFor="state" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">State</label>
+                          <input
+                            type="text"
+                            id="state"
+                            name="state"
+                            value={deliveryInfo.state}
+                            onChange={handleDeliveryInfoChange}
+                            className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.state ? 'border-red-500' : 'border-[#2d1a11]'}`}
+                            placeholder="NY"
+                          />
+                          {formErrors.state && <p className="text-red-500 text-xs mt-1">{formErrors.state}</p>}
+                        </div>
+                        <div>
+                          <label htmlFor="zipCode" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">ZIP Code</label>
+                          <input
+                            type="text"
+                            id="zipCode"
+                            name="zipCode"
+                            value={deliveryInfo.zipCode}
+                            onChange={handleDeliveryInfoChange}
+                            className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.zipCode ? 'border-red-500' : 'border-[#2d1a11]'}`}
+                            placeholder="10001"
+                          />
+                          {formErrors.zipCode && <p className="text-red-500 text-xs mt-1">{formErrors.zipCode}</p>}
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <div className="mb-6">

@@ -21,6 +21,7 @@ export default function CartPage() {
   const router = useRouter();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isClient, setIsClient] = useState(false);
+  const [orderType, setOrderType] = useState<'pickup' | 'delivery'>('delivery');
 
   // Initialize cart from localStorage
   useEffect(() => {
@@ -76,9 +77,12 @@ export default function CartPage() {
   };
 
   // Handle checkout
+  // Handle checkout
   const handleCheckout = () => {
+    // Save order type preference
+    localStorage.setItem('orderType', orderType);
     // Proceed to checkout directly (guest or logged in)
-    router.push('/checkout');
+    router.push('/checkout/success');
   };
 
   if (!isClient) {
@@ -205,6 +209,28 @@ export default function CartPage() {
               <div className="bg-[#120a07] rounded-2xl shadow-sm border border-[#2d1a11] p-6 sticky top-8">
                 <h2 className="text-xl font-semibold text-[#f5eddc] mb-6">Order Summary</h2>
 
+                {/* Pickup/Delivery Toggle */}
+                <div className="bg-[#050302] p-1 rounded-xl flex mb-6 border border-[#2d1a11]">
+                  <button
+                    onClick={() => setOrderType('pickup')}
+                    className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${orderType === 'pickup'
+                      ? 'bg-[#c87534] text-[#120a06] shadow-sm'
+                      : 'text-[#f5eddc]/60 hover:text-[#f5eddc]'
+                      }`}
+                  >
+                    Pickup
+                  </button>
+                  <button
+                    onClick={() => setOrderType('delivery')}
+                    className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${orderType === 'delivery'
+                      ? 'bg-[#c87534] text-[#120a06] shadow-sm'
+                      : 'text-[#f5eddc]/60 hover:text-[#f5eddc]'
+                      }`}
+                  >
+                    Delivery
+                  </button>
+                </div>
+
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between">
                     <span className="text-[#f5eddc]/70">Subtotal</span>
@@ -214,13 +240,15 @@ export default function CartPage() {
                     <span className="text-[#f5eddc]/70">Tax</span>
                     <span className="font-medium text-[#f5eddc]">${(calculateTotal() * 0.08).toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-[#f5eddc]/70">Delivery</span>
-                    <span className="font-medium text-[#f5eddc]">$2.99</span>
-                  </div>
+                  {orderType === 'delivery' && (
+                    <div className="flex justify-between">
+                      <span className="text-[#f5eddc]/70">Delivery</span>
+                      <span className="font-medium text-[#f5eddc]">$2.99</span>
+                    </div>
+                  )}
                   <div className="border-t border-[#2d1a11] pt-4 flex justify-between font-semibold text-lg text-[#f5eddc]">
                     <span>Total</span>
-                    <span>${(calculateTotal() * 1.08 + 2.99).toFixed(2)}</span>
+                    <span>${(calculateTotal() * 1.08 + (orderType === 'delivery' ? 2.99 : 0)).toFixed(2)}</span>
                   </div>
                 </div>
 
