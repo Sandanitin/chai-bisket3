@@ -46,13 +46,13 @@ export default function CheckoutPage() {
   useEffect(() => {
     setIsClient(true);
 
-    // Check if user is logged in
+    // Check if user is logged in (optional now)
     const user = localStorage.getItem('user');
-    if (!user) {
-      // User not logged in, redirect to login
-      router.push('/login?returnUrl=/checkout');
-      return;
-    }
+    // if (!user) {
+    //   // User not logged in, redirect to login
+    //   router.push('/login?returnUrl=/checkout');
+    //   return;
+    // }
 
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
@@ -119,6 +119,29 @@ export default function CheckoutPage() {
     return calculateSubtotal() + calculateTax() + calculateDeliveryFee();
   };
 
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+
+  const validateDeliveryInfo = () => {
+    const errors: Record<string, string> = {};
+    if (!deliveryInfo.name.trim()) errors.name = "Name is required";
+    if (!deliveryInfo.email.trim()) errors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(deliveryInfo.email)) errors.email = "Email is invalid";
+    if (!deliveryInfo.phone.trim()) errors.phone = "Phone is required";
+    if (!deliveryInfo.address.trim()) errors.address = "Address is required";
+    if (!deliveryInfo.city.trim()) errors.city = "City is required";
+    if (!deliveryInfo.state.trim()) errors.state = "State is required";
+    if (!deliveryInfo.zipCode.trim()) errors.zipCode = "ZIP Code is required";
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleContinueToPayment = () => {
+    if (validateDeliveryInfo()) {
+      setActiveStep(2);
+    }
+  };
+
   // Handle form changes
   const handleDeliveryInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -126,6 +149,14 @@ export default function CheckoutPage() {
       ...prev,
       [name]: value
     }));
+    // Clear error when user types
+    if (formErrors[name]) {
+      setFormErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
   const handlePaymentInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -214,9 +245,9 @@ export default function CheckoutPage() {
     // Show success message
     setOrderPlaced(true);
 
-    // Redirect to order confirmation after 3 seconds
+    // Redirect to home page after 3 seconds
     setTimeout(() => {
-      router.push('/profile?tab=orders');
+      router.push('/');
     }, 3000);
   };
 
@@ -275,10 +306,10 @@ export default function CheckoutPage() {
                 {[1, 2, 3].map((step) => (
                   <div key={step} className="flex items-center">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center ${activeStep === step
-                        ? 'bg-[#c87534] text-[#120a06]'
-                        : activeStep > step
-                          ? 'bg-[#1a100b] text-[#c87534] border border-[#c87534]/30'
-                          : 'bg-[#1a100b] text-[#f5eddc]/30 border border-[#2d1a11]'
+                      ? 'bg-[#c87534] text-[#120a06]'
+                      : activeStep > step
+                        ? 'bg-[#1a100b] text-[#c87534] border border-[#c87534]/30'
+                        : 'bg-[#1a100b] text-[#f5eddc]/30 border border-[#2d1a11]'
                       }`}>
                       {activeStep > step ? (
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -319,9 +350,10 @@ export default function CheckoutPage() {
                         name="name"
                         value={deliveryInfo.name}
                         onChange={handleDeliveryInfoChange}
-                        className="w-full border border-[#2d1a11] bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.name ? 'border-red-500' : 'border-[#2d1a11]'}`}
                         placeholder="John Doe"
                       />
+                      {formErrors.name && <p className="text-red-500 text-xs mt-1">{formErrors.name}</p>}
                     </div>
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Email</label>
@@ -331,9 +363,10 @@ export default function CheckoutPage() {
                         name="email"
                         value={deliveryInfo.email}
                         onChange={handleDeliveryInfoChange}
-                        className="w-full border border-[#2d1a11] bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.email ? 'border-red-500' : 'border-[#2d1a11]'}`}
                         placeholder="john@example.com"
                       />
+                      {formErrors.email && <p className="text-red-500 text-xs mt-1">{formErrors.email}</p>}
                     </div>
                     <div>
                       <label htmlFor="phone" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Phone Number</label>
@@ -343,9 +376,10 @@ export default function CheckoutPage() {
                         name="phone"
                         value={deliveryInfo.phone}
                         onChange={handleDeliveryInfoChange}
-                        className="w-full border border-[#2d1a11] bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.phone ? 'border-red-500' : 'border-[#2d1a11]'}`}
                         placeholder="(123) 456-7890"
                       />
+                      {formErrors.phone && <p className="text-red-500 text-xs mt-1">{formErrors.phone}</p>}
                     </div>
                     <div>
                       <label htmlFor="address" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Address</label>
@@ -355,9 +389,10 @@ export default function CheckoutPage() {
                         name="address"
                         value={deliveryInfo.address}
                         onChange={handleDeliveryInfoChange}
-                        className="w-full border border-[#2d1a11] bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.address ? 'border-red-500' : 'border-[#2d1a11]'}`}
                         placeholder="123 Main St"
                       />
+                      {formErrors.address && <p className="text-red-500 text-xs mt-1">{formErrors.address}</p>}
                     </div>
                     <div>
                       <label htmlFor="city" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">City</label>
@@ -367,9 +402,10 @@ export default function CheckoutPage() {
                         name="city"
                         value={deliveryInfo.city}
                         onChange={handleDeliveryInfoChange}
-                        className="w-full border border-[#2d1a11] bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.city ? 'border-red-500' : 'border-[#2d1a11]'}`}
                         placeholder="New York"
                       />
+                      {formErrors.city && <p className="text-red-500 text-xs mt-1">{formErrors.city}</p>}
                     </div>
                     <div>
                       <label htmlFor="state" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">State</label>
@@ -379,9 +415,10 @@ export default function CheckoutPage() {
                         name="state"
                         value={deliveryInfo.state}
                         onChange={handleDeliveryInfoChange}
-                        className="w-full border border-[#2d1a11] bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.state ? 'border-red-500' : 'border-[#2d1a11]'}`}
                         placeholder="NY"
                       />
+                      {formErrors.state && <p className="text-red-500 text-xs mt-1">{formErrors.state}</p>}
                     </div>
                     <div>
                       <label htmlFor="zipCode" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">ZIP Code</label>
@@ -391,9 +428,10 @@ export default function CheckoutPage() {
                         name="zipCode"
                         value={deliveryInfo.zipCode}
                         onChange={handleDeliveryInfoChange}
-                        className="w-full border border-[#2d1a11] bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.zipCode ? 'border-red-500' : 'border-[#2d1a11]'}`}
                         placeholder="10001"
                       />
+                      {formErrors.zipCode && <p className="text-red-500 text-xs mt-1">{formErrors.zipCode}</p>}
                     </div>
                   </div>
 
@@ -411,7 +449,7 @@ export default function CheckoutPage() {
                   </div>
 
                   <Button
-                    onClick={() => setActiveStep(2)}
+                    onClick={handleContinueToPayment}
                     className="w-full bg-[#c87534] hover:bg-[#d8843d] text-[#120a06] font-medium py-3 rounded-xl"
                   >
                     Continue to Payment

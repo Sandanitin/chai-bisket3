@@ -4,8 +4,12 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  theme: { 
+  theme: {
     extend: {
+      fontFamily: {
+        serif: ["var(--font-playfair)", "serif"],
+        sans: ["var(--font-outfit)", "sans-serif"],
+      },
       // Add this to extend the theme
       animation: {
         'marquee': 'marquee 20s linear infinite',
@@ -16,7 +20,7 @@ const config: Config = {
           '100%': { transform: 'translateX(-50%)' },
         }
       }
-    } 
+    }
   },
   plugins: [],
 };

@@ -77,16 +77,8 @@ export default function CartPage() {
 
   // Handle checkout
   const handleCheckout = () => {
-    // Check if user is logged in
-    const isLoggedIn = localStorage.getItem('user');
-
-    if (isLoggedIn) {
-      // User is logged in, proceed to checkout
-      router.push('/checkout');
-    } else {
-      // User is not logged in, redirect to login with return URL
-      router.push('/login?returnUrl=/checkout');
-    }
+    // Proceed to checkout directly (guest or logged in)
+    router.push('/checkout');
   };
 
   if (!isClient) {
@@ -111,8 +103,8 @@ export default function CartPage() {
               <Image src="/images/logo.jpg" alt="Chai Bisket" width={48} height={48} className="object-cover" />
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-[#f5eddc]/60">Chai Bisket LLC</p>
-              <h1 className="text-3xl md:text-4xl font-bold text-[#f5eddc]">Your Cart</h1>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#f5eddc]/60">Chai Bisket</p>
+              <h1 className="text-3xl md:text-4xl font-serif font-bold text-[#f5eddc]">Your Cart</h1>
             </div>
           </div>
           <Button

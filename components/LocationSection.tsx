@@ -113,7 +113,10 @@ const LocationSection = () => {
                             <div>
                                 <h3 className="text-xl font-bold text-[#f5eddc] mb-2">Contact</h3>
                                 <p className="text-[#f5eddc]/80 mb-2">
-                                    (770) 555-0123
+                                    +1 (943) 204-0168
+                                </p>
+                                <p className="text-[#f5eddc]/80 mb-2">
+                                    support@chaibisket.com
                                 </p>
                                 <p className="text-[#f5eddc]/60 text-sm">
                                     Call us for reservations or takeout orders.

@@ -237,8 +237,8 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
                     onClick={() => scrollCategories('right')}
                     disabled={!canScrollRight}
                     className={`h-8 w-8 sm:h-10 sm:w-10 rounded-full border border-[#2d1a11] flex items-center justify-center transition ${canScrollRight
-                        ? 'bg-[#120a07] hover:bg-[#1c0a05]'
-                        : 'bg-[#120a07]/40 opacity-50 cursor-not-allowed'
+                      ? 'bg-[#120a07] hover:bg-[#1c0a05]'
+                      : 'bg-[#120a07]/40 opacity-50 cursor-not-allowed'
                       }`}
                   >
                     <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 text-[#f5eddc]" />
@@ -356,28 +356,7 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
           </div>
         )}
 
-        <div className="mt-12 sm:mt-16 text-center">
-          <div className="bg-[#120a07] p-5 sm:p-6 md:p-8 rounded-2xl shadow-sm border border-[#2d1a11] max-w-3xl mx-auto">
-            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-[#f5eddc] mb-2 sm:mb-3">Need a full cart?</h3>
-            <p className="text-[#f5eddc]/70 mb-4 sm:mb-5 md:mb-6 max-w-md mx-auto text-sm">
-              Checkout to reserve your groceries or add more staples to your basket.
-            </p>
-            <Button
-              onClick={() => router.push('/cart')}
-              className="font-medium px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 inline-flex items-center gap-2 text-sm sm:text-base"
-            >
-              <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span className="hidden xs:inline">View Cart & Checkout</span>
-              <span className="xs:hidden">View Cart</span>
-              {getCartCount() > 0 && (
-                <span className="ml-2 bg-[#050302]/30 text-[#f5eddc] text-[10px] sm:text-xs font-semibold px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full">
-                  {getCartCount()} {getCartCount() === 1 ? 'item' : 'items'}
-                </span>
-              )}
-            </Button>
-            <p className="mt-3 text-xs text-[#f5eddc]/50">Delivery windows and prices refresh throughout the day.</p>
-          </div>
-        </div>
+
       </div>
     </section>
   );

@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Clock, Phone, Instagram, Utensils, Leaf, Coffee, Sandwich, Sprout, ShoppingCart } from "lucide-react";
+import { MapPin, Clock, Phone, Instagram, Utensils, Leaf, Coffee, Sandwich, Sprout, ShoppingCart, Facebook, ShoppingBag, Truck } from "lucide-react";
 import Menu from "@/components/Menu";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
@@ -331,7 +331,7 @@ export default function Page() {
               Now serving in Cumming, GA
             </span>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight tracking-tight text-[#f5eddc] drop-shadow-[0_6px_25px_rgba(0,0,0,0.45)]">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif font-bold leading-tight tracking-tight text-[#f5eddc] drop-shadow-[0_6px_25px_rgba(0,0,0,0.45)]">
               Biryani is an{" "}
               <span className="relative inline-block px-2">
                 <span className="relative z-10 text-[#f0a35c]">emotion</span>
@@ -345,8 +345,8 @@ export default function Page() {
             </h1>
 
             <p className="mt-5 sm:mt-7 text-base sm:text-lg md:text-xl text-[#f5eddc]/85 max-w-2xl leading-relaxed">
-              1920×650 stories of warmth, spice, and soulful nostalgia sliding every three seconds.
-              From Irani chai to Osmania biscuits, we pour authentic Hyderabadi comfort into every cup and plate.
+              Stories of warmth, spice, and soulful nostalgia.
+              From Irani chai to Osmania biscuits, we pour authentic tradition and comfort into every cup and plate.
             </p>
 
             <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -366,9 +366,20 @@ export default function Page() {
                 size="lg"
                 asChild
               >
-                <a href="#order-options" className="flex items-center justify-center sm:justify-start gap-2">
-                  <Phone className="h-5 w-5" />
-                  Order Now
+                <a href="#menu" className="flex items-center justify-center sm:justify-start gap-2">
+                  <ShoppingBag className="h-5 w-5" />
+                  Pickup
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                className="py-5 sm:py-6 px-6 sm:px-8 text-base font-medium rounded-full transition-all duration-300"
+                size="lg"
+                asChild
+              >
+                <a href="#menu" className="flex items-center justify-center sm:justify-start gap-2">
+                  <Truck className="h-5 w-5" />
+                  Delivery
                 </a>
               </Button>
             </div>
@@ -452,7 +463,7 @@ export default function Page() {
       <Section id="specials" className="bg-[#0b0503]">
         <Container>
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#f5eddc] mb-4">Today&apos;s Special</h2>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#f5eddc] mb-4">Today&apos;s Special</h2>
             <p className="text-[#f5eddc]/80 max-w-2xl mx-auto">
               Discover our chef&apos;s special creations for the day, crafted with the finest ingredients and authentic flavors.
             </p>
@@ -546,7 +557,7 @@ export default function Page() {
       <Section id="our-story" className="bg-[#120a07]">
         <Container>
           <div className="text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Moments & Mood</h2>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold tracking-tight">Moments & Mood</h2>
             <p className="mt-3 text-[#f5eddc]/70">Swipe through the vibe — tag us <span className="font-semibold text-[#f0a35c]">@chaibisket_eats</span> on Instagram to get featured!</p>
           </div>
           <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
@@ -588,7 +599,7 @@ export default function Page() {
       <Section id="testimonials" className="bg-[#0b0503]">
         <Container>
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#f5eddc] mb-4">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#f5eddc] mb-4">
               What Our Customers Say
             </h2>
             <p className="text-[#f5eddc]/80 max-w-2xl mx-auto">
@@ -686,6 +697,20 @@ export default function Page() {
               >
                 Get a Catering Quote
               </a>
+              <div className="mt-6 pt-6 border-t border-[#f5eddc]/10">
+                <h4 className="text-lg font-semibold mb-3">Order Online</h4>
+                <div className="flex flex-wrap gap-3">
+                  <Button variant="outline" className="border-[#f5eddc]/20 hover:bg-[#f5eddc]/10 text-[#f5eddc] cursor-default hover:text-[#f5eddc]">
+                    Pickup
+                  </Button>
+                  <Button variant="outline" className="border-[#f5eddc]/20 hover:bg-[#f5eddc]/10 text-[#f5eddc] cursor-default hover:text-[#f5eddc]">
+                    Delivery
+                  </Button>
+                </div>
+                <div className="mt-4 text-sm text-[#f5eddc]/60">
+                  Need help? Email us at <a href="mailto:support@chaibisket.com" className="text-[#f0a35c] hover:underline">support@chaibisket.com</a>
+                </div>
+              </div>
             </div>
           </div>
         </Container>
@@ -695,17 +720,24 @@ export default function Page() {
       <footer className="bg-[#120a07] text-[#f5eddc] border-t border-[#2d1a11]">
         <Container className="py-10 grid md:grid-cols-3 gap-8">
           <div>
-            <div className="text-xl font-semibold">Chai Bisket LLC</div>
-            <div className="text-[#f5eddc]/70 text-sm">an Indian eatery</div>
-            <p className="mt-3 text-[#f5eddc]/70 text-sm max-w-sm">
-              Light, emotional, and full of passion & food — welcome to your new chai adda in Cumming.
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-12 w-12 rounded-full border border-[#2d1a11] overflow-hidden bg-[#120a07]">
+                <Image src="/images/logo.jpg" alt="Chai Bisket" width={48} height={48} className="object-cover" />
+              </div>
+              <div>
+                <div className="text-xl font-semibold">Chai Bisket</div>
+                <div className="text-[#f5eddc]/70 text-sm">Indian Eatery</div>
+              </div>
+            </div>
+            <p className="mt-3 text-[#f5eddc]/70 text-sm max-w-sm leading-relaxed">
+              Welcome to your new chai adda in Cumming. We bring you the authentic flavors of Hyderabad, from our signature Irani Chai to crispy Osmania biscuits and spicy Biryani. A place for good conversations, great food, and warm memories.
             </p>
           </div>
           <div>
             <div className="font-semibold mb-3">Quick Links</div>
             <ul className="space-y-2 text-[#f5eddc]/70 text-sm">
               <li><a href="#menu" className="hover:text-[#ffd9a0]">Menu</a></li>
-              <li><a href="#story" className="hover:text-[#ffd9a0]">Our Story</a></li>
+              <li><a href="#our-story" className="hover:text-[#ffd9a0]">Our Story</a></li>
               <li><a href="#location" className="hover:text-[#ffd9a0]">Location & Hours</a></li>
               <li><a href="#contact" className="hover:text-[#ffd9a0]">Catering</a></li>
             </ul>
@@ -713,16 +745,21 @@ export default function Page() {
           <div>
             <div className="font-semibold mb-3">Find Us</div>
             <div className="text-sm text-[#f5eddc]/70 flex items-start gap-2"><MapPin className="h-4 w-4 mt-1" /> 911 Market Pl Blvd, Suite L, Cumming, GA 30041</div>
-            <div className="text-sm text-[#f5eddc]/70 mt-2">Phone: (770) 555‑0123</div>
-            <a href="https://instagram.com/chaibisket_eats" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 mt-4 text-[#f5eddc] hover:text-[#ffd9a0]">
-              <Instagram className="h-4 w-4" /> Follow on Instagram
-            </a>
+            <div className="text-sm text-[#f5eddc]/70 mt-2 flex items-center gap-2"><Phone className="h-4 w-4" /> +1 (943) 204-0168</div>
+            <div className="flex gap-4 mt-4">
+              <a href="https://instagram.com/chaibisket_eats" target="_blank" rel="noreferrer" className="text-[#f5eddc] hover:text-[#ffd9a0]" aria-label="Instagram">
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a href="https://facebook.com" target="_blank" rel="noreferrer" className="text-[#f5eddc] hover:text-[#ffd9a0]" aria-label="Facebook">
+                <Facebook className="h-5 w-5" />
+              </a>
+            </div>
           </div>
         </Container>
         <div className="border-t border-[#2d1a11]">
           <Container className="py-4 text-xs text-[#f5eddc]/60 flex flex-wrap items-center justify-between">
-            <span>© {new Date().getFullYear()} Chai Bisket LLC. All rights reserved.</span>
-            <span>Made with ❤ chai & biscuits.</span>
+            <span>© {new Date().getFullYear()} Chai Bisket. All rights reserved.</span>
+            <span>Made with ❤ Chai Bisket.</span>
           </Container>
         </div>
       </footer>
