@@ -398,19 +398,6 @@ export default function Page() {
                 </a>
               </Button>
             </div>
-
-            <div className="mt-10 flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-[#f5eddc]/80">
-              {[
-                { label: "Freshly brewed chai", color: "#f0a35c" },
-                { label: "Charcoal-fired kebabs", color: "#d97a3a" },
-                { label: "Vegetarian favourites", color: "#f5b97a" },
-              ].map((chip) => (
-                <div key={chip.label} className="flex items-center gap-2 bg-[#120a07]/80 px-3 sm:px-4 py-2 rounded-full backdrop-blur-sm border border-[#f5eddc]/10">
-                  <div className="h-2 w-2 rounded-full" style={{ backgroundColor: chip.color }}></div>
-                  <span>{chip.label}</span>
-                </div>
-              ))}
-            </div>
           </motion.div>
         </Container>
 
