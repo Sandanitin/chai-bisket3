@@ -115,43 +115,28 @@ const SafeImage = ({ src, alt, className = "", label }: { src: string, alt?: str
 };
 // --- Contact Form for "Write to Us" section ---
 function WriteToUsForm() {
-  const [status, setStatus] = React.useState<"idle" | "sending" | "ok" | "error">("idle");
-  const [errorMsg, setErrorMsg] = React.useState<string>("");
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrorMsg("");
     const formEl = e.currentTarget;
     const fd = new FormData(formEl);
-    const payload = {
-      firstName: String(fd.get("firstName") || ""),
-      lastName: String(fd.get("lastName") || ""),
-      email: String(fd.get("email") || ""),
-      phone: String(fd.get("phone") || ""),
-      message: String(fd.get("message") || ""),
-    };
 
-    setStatus("sending");
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+    const firstName = String(fd.get("firstName") || "");
+    const lastName = String(fd.get("lastName") || "");
+    const email = String(fd.get("email") || "");
+    const phone = String(fd.get("phone") || "");
+    const message = String(fd.get("message") || "");
 
-      let data: any = {};
-      try { data = await res.json(); } catch { /* ignore parse errors */ }
+    // Create email subject and body
+    const subject = encodeURIComponent(`Contact Form Submission from ${firstName} ${lastName}`);
+    const body = encodeURIComponent(
+      `Name: ${firstName} ${lastName}\n` +
+      `Email: ${email}\n` +
+      `Phone: ${phone}\n\n` +
+      `Message:\n${message}`
+    );
 
-      if (!res.ok || !data?.ok) {
-        throw new Error(data?.error || `Request failed (${res.status})`);
-      }
-
-      setStatus("ok");
-      formEl.reset(); // clear fields on success
-    } catch (err: any) {
-      setErrorMsg(err?.message || "Unknown error");
-      setStatus("error");
-    }
+    // Open default email client
+    window.location.href = `mailto:support@chaibisket.com?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -192,67 +177,9 @@ function WriteToUsForm() {
         placeholder="Your Message"
         required
       />
-      <Button type="submit" disabled={status === "sending"} className="bg-gradient-to-r from-[#f0a35c] to-[#d97a3a] hover:from-[#f5b97a] hover:to-[#e08a4a]">
-        {status === "sending" ? "Sending..." : "Submit"}
+      <Button type="submit" className="bg-gradient-to-r from-[#f0a35c] to-[#d97a3a] hover:from-[#f5b97a] hover:to-[#e08a4a]">
+        Submit
       </Button>
-      {status === "ok" && <div className="text-sm text-[#c87534] font-medium">Thanks! We've received your message and will get back to you shortly.</div>}
-      {status === "error" && <div className="text-sm text-[#ff9b7a]">Something went wrong. Please try again. {errorMsg && <span className="opacity-70">({errorMsg})</span>}</div>}
-    </form>
-  );
-}
-
-// --- Catering Contact Form ---
-function ContactForm() {
-  const [status, setStatus] = React.useState<"idle" | "sending" | "ok" | "error">("idle");
-  const [errorMsg, setErrorMsg] = React.useState<string>("");
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setErrorMsg("");
-    const formEl = e.currentTarget;
-    const fd = new FormData(formEl);
-    const payload = {
-      name: String(fd.get("name") || ""),
-      email: String(fd.get("email") || ""),
-      phone: String(fd.get("phone") || ""),
-      message: String(fd.get("message") || ""),
-    };
-
-    setStatus("sending");
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      let data: any = {};
-      try { data = await res.json(); } catch { /* ignore parse errors */ }
-
-      if (!res.ok || !data?.ok) {
-        throw new Error(data?.error || `Request failed (${res.status})`);
-      }
-
-      setStatus("ok");
-      formEl.reset(); // clear fields on success
-    } catch (err: any) {
-      setErrorMsg(err?.message || "Unknown error");
-      setStatus("error");
-    }
-  };
-
-  return (
-    <form className="grid gap-4" onSubmit={onSubmit}>
-      <input name="name" className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] placeholder:text-[#f5eddc]/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]" placeholder="Your name" required />
-      <input name="email" type="email" className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] placeholder:text-[#f5eddc]/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]" placeholder="Email address" required />
-      <input name="phone" className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] placeholder:text-[#f5eddc]/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]" placeholder="Phone number (optional)" />
-      <input name="website" className="hidden" tabIndex={-1} autoComplete="off" />
-      <textarea name="message" rows={4} className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] placeholder:text-[#f5eddc]/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]" placeholder="Tell us about your event or question (e.g., party size, date, special requests)" required />
-      <Button type="submit" disabled={status === "sending"}>
-        {status === "sending" ? "Sending..." : "Send Message"}
-      </Button>
-      {status === "ok" && <div className="text-sm text-[#c87534] font-medium">Thanks! We've received your message and will get back to you shortly.</div>}
-      {status === "error" && <div className="text-sm text-[#ff9b7a]">Something went wrong. Please try again. {errorMsg && <span className="opacity-70">({errorMsg})</span>}</div>}
     </form>
   );
 }
@@ -780,53 +707,6 @@ export default function Page() {
         </Container>
       </Section>
 
-      {/* CONTACT / CATERING */}
-      <Section id="contact" className="bg-[#120a07]">
-        <Container>
-          <div id="order-options" className="scroll-mt-32" />
-          <div className="grid md:grid-cols-2 gap-8 items-start">
-            <Card className="rounded-3xl">
-              <CardHeader>
-                <CardTitle>Contact & Catering</CardTitle>
-              </CardHeader>
-              <CardContent>
-
-                <ContactForm />
-              </CardContent>
-            </Card>
-            <div className="bg-gradient-to-br from-[#2b160d] to-[#5a2d1a] text-[#f5eddc] rounded-3xl p-8 shadow-xl relative overflow-hidden">
-              <div className="absolute -top-10 -right-10 w-48 h-48 bg-[#f5eddc]/10 rounded-full" />
-              <h3 className="text-2xl font-semibold">Hosting a Party?</h3>
-              <p className="mt-3 text-[#f5eddc]/80">From chai counters to biryani bars — we cater birthdays, office events, and desi celebrations.</p>
-              <ul className="mt-4 space-y-2 text-sm text-[#f5eddc]/90">
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#f5eddc]"></div> Customizable menus</li>
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#f5eddc]"></div> Bulk chai, biscuits & snacks</li>
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#f5eddc]"></div> On‑site live stations</li>
-              </ul>
-              <a
-                href="#contact"
-                className="inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-3.5 text-sm sm:text-base font-semibold text-center text-[#120a06] bg-gradient-to-r from-[#f0a35c] to-[#c87534] hover:from-[#f5b97a] hover:to-[#d8843d] rounded-xl shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-95 w-full sm:w-auto"
-              >
-                Get a Catering Quote
-              </a>
-              <div className="mt-6 pt-6 border-t border-[#f5eddc]/10">
-                <h4 className="text-lg font-semibold mb-3">Order Online</h4>
-                <div className="flex flex-wrap gap-3">
-                  <Button variant="outline" className="border-[#f5eddc]/20 hover:bg-[#f5eddc]/10 text-[#f5eddc] cursor-default hover:text-[#f5eddc]">
-                    Pickup
-                  </Button>
-                  <Button variant="outline" className="border-[#f5eddc]/20 hover:bg-[#f5eddc]/10 text-[#f5eddc] cursor-default hover:text-[#f5eddc]">
-                    Delivery
-                  </Button>
-                </div>
-                <div className="mt-4 text-sm text-[#f5eddc]/60">
-                  Need help? Email us at <a href="mailto:support@chaibisket.com" className="text-[#f0a35c] hover:underline">support@chaibisket.com</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </Section>
 
       {/* FOOTER */}
       <footer className="bg-[#120a07] text-[#f5eddc] border-t border-[#2d1a11]">
@@ -852,7 +732,6 @@ export default function Page() {
               <li><a href="#our-story" className="hover:text-[#ffd9a0]">Our Story</a></li>
               <li><a href="#location" className="hover:text-[#ffd9a0]">Location & Hours</a></li>
               <li><a href="#write-to-us" className="hover:text-[#ffd9a0]">Contact Us</a></li>
-              <li><a href="#contact" className="hover:text-[#ffd9a0]">Catering</a></li>
             </ul>
           </div>
           <div>
