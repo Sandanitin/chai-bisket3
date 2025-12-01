@@ -18,8 +18,13 @@ export const metadata: Metadata = {
   title: "Chai Bisket — an Indian eatery",
   description: "Biryani is an emotion, chai is for mood.",
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
+    icon: [
+      { url: "/images/logo.jpg" },
+      { url: "/images/logo.jpg", sizes: "32x32", type: "image/jpeg" },
+      { url: "/images/logo.jpg", sizes: "16x16", type: "image/jpeg" },
+    ],
+    shortcut: "/images/logo.jpg",
+    apple: "/images/logo.jpg",
   },
 };
 
