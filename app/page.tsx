@@ -681,7 +681,7 @@ export default function Page() {
                 Write to Us
               </h2>
               <p className="text-[#f5eddc]/80">
-                Have a question or feedback? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.
+                Have a question or feedback? We&apos;d love to hear from you. Fill out the form below and we&apos;ll get back to you as soon as possible.
               </p>
             </div>
 
