@@ -113,7 +113,95 @@ const SafeImage = ({ src, alt, className = "", label }: { src: string, alt?: str
     </div>
   );
 };
-// --- Robust ContactForm (paste above the default export in app/page.tsx) ---
+// --- Contact Form for "Write to Us" section ---
+function WriteToUsForm() {
+  const [status, setStatus] = React.useState<"idle" | "sending" | "ok" | "error">("idle");
+  const [errorMsg, setErrorMsg] = React.useState<string>("");
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setErrorMsg("");
+    const formEl = e.currentTarget;
+    const fd = new FormData(formEl);
+    const payload = {
+      firstName: String(fd.get("firstName") || ""),
+      lastName: String(fd.get("lastName") || ""),
+      email: String(fd.get("email") || ""),
+      phone: String(fd.get("phone") || ""),
+      message: String(fd.get("message") || ""),
+    };
+
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      let data: any = {};
+      try { data = await res.json(); } catch { /* ignore parse errors */ }
+
+      if (!res.ok || !data?.ok) {
+        throw new Error(data?.error || `Request failed (${res.status})`);
+      }
+
+      setStatus("ok");
+      formEl.reset(); // clear fields on success
+    } catch (err: any) {
+      setErrorMsg(err?.message || "Unknown error");
+      setStatus("error");
+    }
+  };
+
+  return (
+    <form className="grid gap-4" onSubmit={onSubmit}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input
+          name="firstName"
+          className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] placeholder:text-[#f5eddc]/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+          placeholder="First Name"
+          required
+        />
+        <input
+          name="lastName"
+          className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] placeholder:text-[#f5eddc]/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+          placeholder="Last Name"
+          required
+        />
+      </div>
+      <input
+        name="email"
+        type="email"
+        className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] placeholder:text-[#f5eddc]/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+        placeholder="Email Address"
+        required
+      />
+      <input
+        name="phone"
+        type="tel"
+        className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] placeholder:text-[#f5eddc]/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+        placeholder="Phone Number"
+        required
+      />
+      <input name="website" className="hidden" tabIndex={-1} autoComplete="off" />
+      <textarea
+        name="message"
+        rows={5}
+        className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] placeholder:text-[#f5eddc]/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+        placeholder="Your Message"
+        required
+      />
+      <Button type="submit" disabled={status === "sending"} className="bg-gradient-to-r from-[#f0a35c] to-[#d97a3a] hover:from-[#f5b97a] hover:to-[#e08a4a]">
+        {status === "sending" ? "Sending..." : "Submit"}
+      </Button>
+      {status === "ok" && <div className="text-sm text-[#c87534] font-medium">Thanks! We've received your message and will get back to you shortly.</div>}
+      {status === "error" && <div className="text-sm text-[#ff9b7a]">Something went wrong. Please try again. {errorMsg && <span className="opacity-70">({errorMsg})</span>}</div>}
+    </form>
+  );
+}
+
+// --- Catering Contact Form ---
 function ContactForm() {
   const [status, setStatus] = React.useState<"idle" | "sending" | "ok" | "error">("idle");
   const [errorMsg, setErrorMsg] = React.useState<string>("");
@@ -163,7 +251,7 @@ function ContactForm() {
       <Button type="submit" disabled={status === "sending"}>
         {status === "sending" ? "Sending..." : "Send Message"}
       </Button>
-      {status === "ok" && <div className="text-sm text-[#c87534] font-medium">Thanks! We’ve received your message and will get back to you shortly.</div>}
+      {status === "ok" && <div className="text-sm text-[#c87534] font-medium">Thanks! We've received your message and will get back to you shortly.</div>}
       {status === "error" && <div className="text-sm text-[#ff9b7a]">Something went wrong. Please try again. {errorMsg && <span className="opacity-70">({errorMsg})</span>}</div>}
     </form>
   );
@@ -657,8 +745,43 @@ export default function Page() {
         <LocationSection />
       </Section>
 
+      {/* WRITE TO US / CONTACT US SECTION */}
+      <Section id="write-to-us" className="bg-[#0b0503]">
+        <Container>
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#f5eddc] mb-4">
+                Write to Us
+              </h2>
+              <p className="text-[#f5eddc]/80">
+                Have a question or feedback? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.
+              </p>
+            </div>
+
+            <Card className="rounded-3xl bg-[#120a07] border-[#2d1a11]">
+              <CardContent className="pt-6">
+                <WriteToUsForm />
+              </CardContent>
+            </Card>
+
+            {/* Support Email */}
+            <div className="mt-6 text-center">
+              <p className="text-sm text-[#f5eddc]/60">
+                Or email us directly at{" "}
+                <a
+                  href="mailto:support@chaibisket.com"
+                  className="text-[#f0a35c] hover:underline font-medium"
+                >
+                  support@chaibisket.com
+                </a>
+              </p>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
       {/* CONTACT / CATERING */}
-      <Section id="contact" className="bg-[#0b0503]">
+      <Section id="contact" className="bg-[#120a07]">
         <Container>
           <div id="order-options" className="scroll-mt-32" />
           <div className="grid md:grid-cols-2 gap-8 items-start">
@@ -728,6 +851,7 @@ export default function Page() {
               <li><a href="#menu" className="hover:text-[#ffd9a0]">Menu</a></li>
               <li><a href="#our-story" className="hover:text-[#ffd9a0]">Our Story</a></li>
               <li><a href="#location" className="hover:text-[#ffd9a0]">Location & Hours</a></li>
+              <li><a href="#write-to-us" className="hover:text-[#ffd9a0]">Contact Us</a></li>
               <li><a href="#contact" className="hover:text-[#ffd9a0]">Catering</a></li>
             </ul>
           </div>

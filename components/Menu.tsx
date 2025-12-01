@@ -268,7 +268,7 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
                         <button
                           key={category}
                           onClick={() => setActiveCategory(category)}
-                          className={`relative pb-2 sm:pb-3 px-1.5 sm:px-2 md:px-3 text-[8px] xs:text-[9px] sm:text-xs font-semibold tracking-[0.1em] xs:tracking-[0.14em] sm:tracking-[0.25em] uppercase whitespace-nowrap transition ${isActive ? 'text-[#f5eddc]' : 'text-[#f5eddc]/40'
+                          className={`relative pb-2 sm:pb-3 px-3 sm:px-4 md:px-5 text-base sm:text-lg font-semibold tracking-widest uppercase whitespace-nowrap transition ${isActive ? 'text-[#f5eddc]' : 'text-[#f5eddc]/40'
                             }`}
                         >
                           {category}
