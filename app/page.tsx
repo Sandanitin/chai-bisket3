@@ -79,11 +79,9 @@ const art = {
 };
 
 const heroBanners = [
-
-  { src: "/images/ae44b7bcdb2fb7bf13cc56c78425680b.jpg", alt: "Chai Bisket Special" },
-
-  { src: "/images/ae44b7bcdb2fb7bf13cc56c78425680b.jpg", alt: "Chai Bisket Special" },
-  { src: "/images/ae44b7bcdb2fb7bf13cc56c78425680b.jpg", alt: "Chai Bisket Special" },
+  { src: "/images/hero_chai_banner.png", alt: "Traditional Irani Chai & Osmania Biscuits" },
+  { src: "/images/hero_biryani_banner.png", alt: "Authentic Hyderabadi Biryani" },
+  { src: "/images/hero_snacks_banner.png", alt: "Indian Street Food Delights" },
 ];
 
 const Placeholder = ({ label = "Image" }: { label?: string }) => (
