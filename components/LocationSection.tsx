@@ -119,7 +119,7 @@ const LocationSection = () => {
                                     support@chaibisket.com
                                 </p>
                                 <p className="text-[#f5eddc]/60 text-sm">
-                                    Call us for reservations or takeout orders.
+                                    Call us for takeout orders and catering orders.
                                 </p>
                             </div>
                         </div>
