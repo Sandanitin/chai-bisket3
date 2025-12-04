@@ -78,8 +78,11 @@ const art = {
 };
 
 const heroBanners = [
-  { src: "/images/banner1.jpg", alt: "Signature chai and biscuits" },
-  { src: "/images/banner2.jpg", alt: "Street food favourites" },
+ 
+  { src: "/images/ae44b7bcdb2fb7bf13cc56c78425680b.jpg", alt: "Chai Bisket Special" },
+  
+  { src: "/images/ae44b7bcdb2fb7bf13cc56c78425680b.jpg", alt: "Chai Bisket Special" },
+  { src: "/images/ae44b7bcdb2fb7bf13cc56c78425680b.jpg", alt: "Chai Bisket Special" },
 ];
 
 const Placeholder = ({ label = "Image" }: { label?: string }) => (
