@@ -357,19 +357,21 @@ export default function CheckoutPage() {
                   </h2>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Full Name</label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={deliveryInfo.name}
-                        onChange={handleDeliveryInfoChange}
-                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.name ? 'border-red-500' : 'border-[#2d1a11]'}`}
-                        placeholder="John Doe"
-                      />
-                      {formErrors.name && <p className="text-red-500 text-xs mt-1">{formErrors.name}</p>}
-                    </div>
+                    {orderType === 'delivery' && (
+                      <div>
+                        <label htmlFor="name" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Full Name</label>
+                        <input
+                          type="text"
+                          id="name"
+                          name="name"
+                          value={deliveryInfo.name}
+                          onChange={handleDeliveryInfoChange}
+                          className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.name ? 'border-red-500' : 'border-[#2d1a11]'}`}
+                          placeholder="John Doe"
+                        />
+                        {formErrors.name && <p className="text-red-500 text-xs mt-1">{formErrors.name}</p>}
+                      </div>
+                    )}
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Email</label>
                       <input
@@ -456,7 +458,9 @@ export default function CheckoutPage() {
                   </div>
 
                   <div className="mb-6">
-                    <label htmlFor="deliveryInstructions" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Delivery Instructions (Optional)</label>
+                    <label htmlFor="deliveryInstructions" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">
+                      {orderType === 'pickup' ? 'Additional Instructions (Optional)' : 'Delivery Instructions (Optional)'}
+                    </label>
                     <textarea
                       id="deliveryInstructions"
                       name="deliveryInstructions"
@@ -464,7 +468,7 @@ export default function CheckoutPage() {
                       onChange={handleDeliveryInfoChange}
                       rows={3}
                       className="w-full border border-[#2d1a11] bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
-                      placeholder="Leave at front door, ring bell, etc."
+                      placeholder={orderType === 'pickup' ? 'Any special requests...' : 'Leave at front door, ring bell, etc.'}
                     ></textarea>
                   </div>
 
@@ -477,7 +481,7 @@ export default function CheckoutPage() {
                 </div>
               )}
 
-              {/* Step 2: Payment Information (Cash Only) */}
+              {/* Step 2: Payment Information */}
               {activeStep === 2 && (
                 <div>
                   <h2 className="text-xl font-semibold text-[#f5eddc] mb-6 flex items-center gap-2">
@@ -485,17 +489,40 @@ export default function CheckoutPage() {
                     Payment Method
                   </h2>
 
-                  <div className="bg-[#1a100b] border border-[#2d1a11] rounded-xl p-4 mb-6">
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-[#c87534]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                        </svg>
+                  <div className="space-y-4 mb-6">
+                    {/* Cash Payment Option */}
+                    <div className="bg-[#1a100b] border border-[#2d1a11] rounded-xl p-4 cursor-pointer hover:border-[#c87534] transition-colors">
+                      <div className="flex items-start">
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value="cash"
+                          defaultChecked
+                          className="mt-1 h-4 w-4 text-[#c87534] focus:ring-[#c87534]"
+                        />
+                        <div className="ml-3 flex-1">
+                          <h3 className="text-sm font-medium text-[#f5eddc]">Cash Payment</h3>
+                          <div className="mt-2 text-sm text-[#f5eddc]/70">
+                            <p>You will pay with cash upon delivery. Please have the exact amount ready.</p>
+                          </div>
+                        </div>
                       </div>
-                      <div className="ml-3">
-                        <h3 className="text-sm font-medium text-[#f5eddc]">Cash Payment</h3>
-                        <div className="mt-2 text-sm text-[#f5eddc]/70">
-                          <p>You will pay with cash upon delivery. Please have the exact amount ready.</p>
+                    </div>
+
+                    {/* Online Payment Option */}
+                    <div className="bg-[#1a100b] border border-[#2d1a11] rounded-xl p-4 cursor-pointer hover:border-[#c87534] transition-colors">
+                      <div className="flex items-start">
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value="online"
+                          className="mt-1 h-4 w-4 text-[#c87534] focus:ring-[#c87534]"
+                        />
+                        <div className="ml-3 flex-1">
+                          <h3 className="text-sm font-medium text-[#f5eddc]">Online Payment</h3>
+                          <div className="mt-2 text-sm text-[#f5eddc]/70">
+                            <p>Pay securely online via credit card, debit card, or UPI. You will be redirected to our payment gateway.</p>
+                          </div>
                         </div>
                       </div>
                     </div>

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Plus, ShoppingCart, ChevronDown, ChevronLeft, ChevronRight, List, Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { menuItems } from '@/app/data/menuItems';
+import toast from 'react-hot-toast';
 
 const categoryTabs = [
   'Appetizers',
@@ -128,6 +129,9 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
   };
 
   const addToCart = (itemId: number) => {
+    const item = menuItems.find((menuItem) => menuItem.id === itemId);
+    const itemName = item?.name || 'Item';
+
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.id === itemId);
       const updatedCart = existingItem
@@ -139,6 +143,10 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
       localStorage.setItem('cart', JSON.stringify(updatedCart));
       window.dispatchEvent(new CustomEvent('cartUpdated', { detail: { cart: updatedCart } }));
       onCartUpdate?.();
+
+      // Show toast notification
+      toast.success(`${itemName} added to cart!`);
+
       return updatedCart;
     });
   };

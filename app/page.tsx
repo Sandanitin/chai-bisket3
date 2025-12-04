@@ -12,6 +12,7 @@ import Navbar from "@/components/Navbar";
 import LocationSection from "@/components/LocationSection";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 /**
  * Chai Bisket — Single‑file Landing Page
@@ -78,9 +79,9 @@ const art = {
 };
 
 const heroBanners = [
- 
+
   { src: "/images/ae44b7bcdb2fb7bf13cc56c78425680b.jpg", alt: "Chai Bisket Special" },
-  
+
   { src: "/images/ae44b7bcdb2fb7bf13cc56c78425680b.jpg", alt: "Chai Bisket Special" },
   { src: "/images/ae44b7bcdb2fb7bf13cc56c78425680b.jpg", alt: "Chai Bisket Special" },
 ];
@@ -187,6 +188,100 @@ function WriteToUsForm() {
   );
 }
 
+// --- Catering Quote Form ---
+function CateringQuoteForm() {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formEl = e.currentTarget;
+    const fd = new FormData(formEl);
+
+    const name = String(fd.get("name") || "");
+    const email = String(fd.get("email") || "");
+    const phone = String(fd.get("phone") || "");
+    const eventType = String(fd.get("eventType") || "");
+    const eventDate = String(fd.get("eventDate") || "");
+    const guests = String(fd.get("guests") || "");
+    const message = String(fd.get("message") || "");
+
+    // Create email subject and body
+    const subject = encodeURIComponent(`Catering Quote Request from ${name}`);
+    const body = encodeURIComponent(
+      `Name: ${name}\n` +
+      `Email: ${email}\n` +
+      `Phone: ${phone}\n` +
+      `Event Type: ${eventType}\n` +
+      `Event Date: ${eventDate}\n` +
+      `Number of Guests: ${guests}\n\n` +
+      `Additional Details:\n${message}`
+    );
+
+    // Open default email client
+    window.location.href = `mailto:catering@chaibisket.com?subject=${subject}&body=${body}`;
+  };
+
+  return (
+    <form className="grid gap-4" onSubmit={onSubmit}>
+      <input
+        name="name"
+        className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] placeholder:text-[#f5eddc]/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+        placeholder="Full Name"
+        required
+      />
+      <input
+        name="email"
+        type="email"
+        className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] placeholder:text-[#f5eddc]/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+        placeholder="Email Address"
+        required
+      />
+      <input
+        name="phone"
+        type="tel"
+        className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] placeholder:text-[#f5eddc]/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+        placeholder="Phone Number"
+        required
+      />
+      <select
+        name="eventType"
+        className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+        required
+      >
+        <option value="">Select Event Type</option>
+        <option value="Birthday">Birthday</option>
+        <option value="Corporate">Corporate Event</option>
+        <option value="Wedding">Wedding</option>
+        <option value="Other">Other</option>
+      </select>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input
+          name="eventDate"
+          type="date"
+          className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+          required
+        />
+        <input
+          name="guests"
+          type="number"
+          min="1"
+          className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] placeholder:text-[#f5eddc]/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+          placeholder="Number of Guests"
+          required
+        />
+      </div>
+      <textarea
+        name="message"
+        rows={4}
+        className="border border-[#2d1a11] bg-[#050302] text-[#f5eddc] placeholder:text-[#f5eddc]/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534]"
+        placeholder="Tell us about your event..."
+        required
+      />
+      <Button type="submit" className="bg-gradient-to-r from-[#f0a35c] to-[#d97a3a] hover:from-[#f5b97a] hover:to-[#e08a4a]">
+        Get a Catering Quote
+      </Button>
+    </form>
+  );
+}
+
 
 export default function Page() {
   const router = useRouter();
@@ -214,7 +309,7 @@ export default function Page() {
   };
 
   // Add item to cart
-  const addToCart = (itemId: number) => {
+  const addToCart = (itemId: number, itemName?: string) => {
     if (typeof window !== 'undefined') {
       const savedCart = localStorage.getItem('cart');
       let cart = [];
@@ -248,6 +343,9 @@ export default function Page() {
 
       // Dispatch event to notify other components
       window.dispatchEvent(new CustomEvent('cartUpdated', { detail: { cart } }));
+
+      // Show toast notification
+      toast.success(`${itemName || 'Item'} added to cart!`);
     }
   };
 
@@ -351,21 +449,16 @@ export default function Page() {
             </span>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif font-bold leading-tight tracking-tight text-[#f5eddc] drop-shadow-[0_6px_25px_rgba(0,0,0,0.45)]">
-              Biryani is an{" "}
+              Chai Bisket is more than a restaurant —{" "}
               <span className="relative inline-block px-2">
-                <span className="relative z-10 text-[#f0a35c]">emotion</span>
+                <span className="relative z-10 text-[#f0a35c]">it's a feeling</span>
                 <span className="absolute inset-x-0 bottom-1 h-[12px] bg-[#f0a35c]/20 -z-0"></span>
-              </span>
-              , Chai is the{" "}
-              <span className="relative inline-block px-2">
-                <span className="relative z-10 text-[#d97a3a]">mood.</span>
-                <span className="absolute inset-x-0 bottom-1 h-[12px] bg-[#d97a3a]/25 -z-0"></span>
               </span>
             </h1>
 
             <p className="mt-5 sm:mt-7 text-base sm:text-lg md:text-xl text-[#f5eddc]/85 max-w-2xl leading-relaxed">
-              Stories of warmth, spice, and soulful nostalgia.
-              From Irani CHAI to Osmania biscuits, we pour authentic tradition and comfort into every cup and plate.
+              A warm reminder of home, of evenings spent over chai with friends, of festivals filled with biryani, laughter and family. Inspired by the soulful streets of India, we created Chai Bisket to bring those memories to life here in Cumming.
+              <span className="block mt-3 text-[#f0a35c]/90 font-medium">Welcome to a place where your heart and taste buds feel at home.</span>
             </p>
 
             <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -493,7 +586,7 @@ export default function Page() {
                 </div>
                 <p className="text-[#f5eddc]/80 mb-4">Authentic dum biryani with tender meat and fragrant basmati rice.</p>
                 <Button
-                  onClick={() => addToCart(15)}
+                  onClick={() => addToCart(15, 'Hyderabadi Biryani')}
                   className="w-full bg-gradient-to-r from-[#f0a35c] to-[#d97a3a] hover:from-[#f5b97a] hover:to-[#e08a4a]"
                 >
                   Add to Cart
@@ -518,7 +611,7 @@ export default function Page() {
                 </div>
                 <p className="text-[#f5eddc]/80 mb-4">Traditional strong tea with spices, served with Osmania biscuits.</p>
                 <Button
-                  onClick={() => addToCart(4)}
+                  onClick={() => addToCart(4, 'Irani Chai')}
                   className="w-full bg-gradient-to-r from-[#f0a35c] to-[#d97a3a] hover:from-[#f5b97a] hover:to-[#e08a4a]"
                 >
                   Add to Cart
@@ -543,7 +636,7 @@ export default function Page() {
                 </div>
                 <p className="text-[#f5eddc]/80 mb-4">Spicy deep-fried chicken with authentic South Indian spices.</p>
                 <Button
-                  onClick={() => addToCart(13)}
+                  onClick={() => addToCart(13, 'Chicken 65')}
                   className="w-full bg-gradient-to-r from-[#f0a35c] to-[#d97a3a] hover:from-[#f5b97a] hover:to-[#e08a4a]"
                 >
                   Add to Cart
@@ -560,7 +653,7 @@ export default function Page() {
       </Section>
 
       {/* GALLERY */}
-      <Section id="our-story" className="bg-[#120a07]">
+      <Section id="moments" className="bg-[#120a07]">
         <Container>
           <div className="text-center max-w-2xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-serif font-bold tracking-tight">Moments & Mood</h2>
@@ -616,58 +709,133 @@ export default function Page() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Testimonial Card */}
-            {[
-              {
-                name: "Priya Sharma",
-                role: "Food Blogger",
-                text: `"The Hyderabadi Biryani here is the closest I've found to my grandmother's recipe. Authentic flavors that transport you straight to the streets of Hyderabad."`,
-              },
-              {
-                name: "Rahul Mehta",
-                role: "Local Resident",
-                text: `"Their Irani Chai paired with Osmania biscuits is my daily ritual. The perfect start to any day, reminding me of the chai stalls back home in Mumbai."`,
-              },
-              {
-                name: "Anita Desai",
-                role: "Catering Client",
-                text: `"We hired Chai Bisket for our corporate event and they exceeded expectations. The live biryani station was a huge hit, and the service was impeccable!"`,
-              },
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-[#120a07] rounded-2xl p-6 border border-[#2d1a11] shadow-lg hover:shadow-xl transition-all duration-300 hover:border-[#c87534]/50"
-              >
-                {/* Name + Role */}
-                <div className="mb-4">
-                  <h4 className="text-lg font-bold text-[#f5eddc]">{item.name}</h4>
-                  <p className="text-[#f0a35c] text-sm">{item.role}</p>
-                </div>
+          {/* Infinite Scrolling Testimonials */}
+          <div className="relative overflow-hidden">
+            <style jsx>{`
+              @keyframes scroll {
+                0% {
+                  transform: translateX(0);
+                }
+                100% {
+                  transform: translateX(-50%);
+                }
+              }
+              .animate-scroll {
+                animation: scroll 20s linear infinite;
+              }
+              .animate-scroll:hover {
+                animation-play-state: paused;
+              }
+            `}</style>
 
-                {/* Stars */}
-                <div className="flex mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5 text-[#f0a35c]"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
+            <div className="flex animate-scroll gap-6">
+              {/* Original testimonials */}
+              {[
+                {
+                  name: "Priya Sharma",
+                  role: "Food Blogger",
+                  text: `"The Hyderabadi Biryani here is the closest I've found to my grandmother's recipe. Authentic flavors that transport you straight to the streets of Hyderabad."`,
+                },
+                {
+                  name: "Rahul Mehta",
+                  role: "Local Resident",
+                  text: `"Their Irani Chai paired with Osmania biscuits is my daily ritual. The perfect start to any day, reminding me of the chai stalls back home in Mumbai."`,
+                },
+                {
+                  name: "Anita Desai",
+                  role: "Catering Client",
+                  text: `"We hired Chai Bisket for our corporate event and they exceeded expectations. The live biryani station was a huge hit, and the service was impeccable!"`,
+                },
+                {
+                  name: "Vikram Singh",
+                  role: "Regular Customer",
+                  text: `"Every visit feels like coming home. The warm hospitality and authentic flavors make this my favorite spot in town for Indian cuisine."`,
+                },
+              ].map((item, index) => (
+                <div
+                  key={`original-${index}`}
+                  className="bg-[#120a07] rounded-2xl p-6 border border-[#2d1a11] shadow-lg flex-shrink-0 w-[350px] md:w-[400px]"
+                >
+                  {/* Name + Role */}
+                  <div className="mb-4">
+                    <h4 className="text-lg font-bold text-[#f5eddc]">{item.name}</h4>
+                    <p className="text-[#f0a35c] text-sm">{item.role}</p>
+                  </div>
 
-                {/* Text */}
-                <p className="text-[#f5eddc]/80 italic">{item.text}</p>
-              </motion.div>
-            ))}
+                  {/* Stars */}
+                  <div className="flex mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        className="w-5 h-5 text-[#f0a35c]"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+
+                  {/* Text */}
+                  <p className="text-[#f5eddc]/80 italic">{item.text}</p>
+                </div>
+              ))}
+
+              {/* Duplicate testimonials for seamless loop */}
+              {[
+                {
+                  name: "Priya Sharma",
+                  role: "Food Blogger",
+                  text: `"The Hyderabadi Biryani here is the closest I've found to my grandmother's recipe. Authentic flavors that transport you straight to the streets of Hyderabad."`,
+                },
+                {
+                  name: "Rahul Mehta",
+                  role: "Local Resident",
+                  text: `"Their Irani Chai paired with Osmania biscuits is my daily ritual. The perfect start to any day, reminding me of the chai stalls back home in Mumbai."`,
+                },
+                {
+                  name: "Anita Desai",
+                  role: "Catering Client",
+                  text: `"We hired Chai Bisket for our corporate event and they exceeded expectations. The live biryani station was a huge hit, and the service was impeccable!"`,
+                },
+                {
+                  name: "Vikram Singh",
+                  role: "Regular Customer",
+                  text: `"Every visit feels like coming home. The warm hospitality and authentic flavors make this my favorite spot in town for Indian cuisine."`,
+                },
+              ].map((item, index) => (
+                <div
+                  key={`duplicate-${index}`}
+                  className="bg-[#120a07] rounded-2xl p-6 border border-[#2d1a11] shadow-lg flex-shrink-0 w-[350px] md:w-[400px]"
+                >
+                  {/* Name + Role */}
+                  <div className="mb-4">
+                    <h4 className="text-lg font-bold text-[#f5eddc]">{item.name}</h4>
+                    <p className="text-[#f0a35c] text-sm">{item.role}</p>
+                  </div>
+
+                  {/* Stars */}
+                  <div className="flex mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        className="w-5 h-5 text-[#f0a35c]"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+
+                  {/* Text */}
+                  <p className="text-[#f5eddc]/80 italic">{item.text}</p>
+                </div>
+              ))}
+            </div>
           </div>
+
+          <p className="text-center text-[#f5eddc]/50 text-sm mt-6">Hover to pause</p>
         </Container>
       </Section>
 
@@ -677,37 +845,59 @@ export default function Page() {
         <LocationSection />
       </Section>
 
-      {/* WRITE TO US / CONTACT US SECTION */}
+      {/* CONTACT & CATERING SECTION */}
       <Section id="write-to-us" className="bg-[#0b0503]">
         <Container>
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#f5eddc] mb-4">
-                Write to Us
-              </h2>
-              <p className="text-[#f5eddc]/80">
-                Have a question or feedback? We&apos;d love to hear from you. Fill out the form below and we&apos;ll get back to you as soon as possible.
-              </p>
-            </div>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#f5eddc] mb-4">
+              Get in Touch
+            </h2>
+            <p className="text-[#f5eddc]/80 max-w-2xl mx-auto">
+              Have a question or planning an event? We're here to help make your experience memorable.
+            </p>
+          </div>
 
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Write to Us Form */}
             <Card className="rounded-3xl bg-[#120a07] border-[#2d1a11]">
-              <CardContent className="pt-6">
+              <CardHeader>
+                <CardTitle className="text-2xl font-serif text-[#f5eddc]">Write to Us</CardTitle>
+                <p className="text-[#f5eddc]/70 text-sm mt-2">
+                  Questions, feedback, or just want to say hi?
+                </p>
+              </CardHeader>
+              <CardContent>
                 <WriteToUsForm />
               </CardContent>
             </Card>
 
-            {/* Support Email */}
-            <div className="mt-6 text-center">
-              <p className="text-sm text-[#f5eddc]/60">
-                Or email us directly at{" "}
-                <a
-                  href="mailto:support@chaibisket.com"
-                  className="text-[#f0a35c] hover:underline font-medium"
-                >
-                  support@chaibisket.com
-                </a>
-              </p>
-            </div>
+            {/* Catering Quote Form */}
+            <Card className="rounded-3xl bg-[#120a07] border-[#2d1a11]">
+              <CardHeader>
+                <CardTitle className="text-2xl font-serif text-[#f5eddc]">Hosting a Party?</CardTitle>
+                <p className="text-[#f5eddc]/70 text-sm mt-2">
+                  From chai counters to biryani bars — we cater birthdays, office events, and desi celebrations.
+                </p>
+                <ul className="text-[#f5eddc]/70 text-sm mt-3 space-y-1">
+                  <li>• Customizable menus</li>
+                  <li>• Bulk chai, biscuits & snacks</li>
+                  <li>• On-site live stations</li>
+                </ul>
+              </CardHeader>
+            </Card>
+          </div>
+
+          {/* Support Email */}
+          <div className="mt-8 text-center">
+            <p className="text-sm text-[#f5eddc]/60">
+              Or email us directly at{" "}
+              <a
+                href="mailto:support@chaibisket.com"
+                className="text-[#f0a35c] hover:underline font-medium"
+              >
+                support@chaibisket.com
+              </a>
+            </p>
           </div>
         </Container>
       </Section>
@@ -728,14 +918,14 @@ export default function Page() {
             </div>
             <p className="mt-3 text-[#f5eddc]/70 text-sm max-w-sm leading-relaxed">
               Welcome to your new adda in Cumming - a vibrant celebration of India in every flavor.
-We cook with passion, season with nostalgia and serve with love so that each bite feels like home, no matter how far you&nbsp;are&nbsp;from&nbsp;it.
+              We cook with passion, season with nostalgia and serve with love so that each bite feels like home, no matter how far you&nbsp;are&nbsp;from&nbsp;it.
             </p>
           </div>
           <div>
             <div className="font-semibold mb-3">Quick Links</div>
             <ul className="space-y-2 text-[#f5eddc]/70 text-sm">
               <li><a href="#menu" className="hover:text-[#ffd9a0]">Menu</a></li>
-              <li><a href="#our-story" className="hover:text-[#ffd9a0]">Our Story</a></li>
+              <li><a href="#moments" className="hover:text-[#ffd9a0]">Moments</a></li>
               <li><a href="#location" className="hover:text-[#ffd9a0]">Location & Hours</a></li>
               <li><a href="#write-to-us" className="hover:text-[#ffd9a0]">Contact Us</a></li>
             </ul>

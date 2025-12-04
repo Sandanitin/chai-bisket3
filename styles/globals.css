@@ -200,3 +200,10 @@ html, body {
     padding: 0.5rem 0.75rem;
   }
 }
+
+/* Light Mode Overrides */
+.light { background-color: #ffffff !important; }
+.light body { background-color: #ffffff !important; color: #1a1a1a !important; }
+.light .bg-[#050302], .light .bg-[#120a07], .light .bg-[#0b0503], .light .bg-[#1a100b] { background-color: #f8f8f8 !important; }
+.light .text-[#f5eddc] { color: #1a1a1a !important; }
+.light .border-[#2d1a11] { border-color: #e0e0e0 !important; }
