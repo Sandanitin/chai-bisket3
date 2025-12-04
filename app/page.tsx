@@ -741,11 +741,10 @@ We cook with passion, season with nostalgia and serve with love so that each bit
             <div className="font-semibold mb-3">Find Us</div>
             <div className="text-sm text-[#f5eddc]/70 flex items-start gap-2"><MapPin className="h-4 w-4 mt-1" /> 911 Market Pl Blvd, Suite L, Cumming, GA 30041</div>
             <div className="text-sm text-[#f5eddc]/70 mt-2 flex items-center gap-2"><Phone className="h-4 w-4" /> +1 (943) 204-0168</div>
-            <div className="flex mt-3 gap-0 -ml-1">
-              <a href="https://instagram.com/chaibisket_eats" target="_blank" rel="noreferrer" className="text-[#f5eddc] hover:text-[#ffd9a0]" aria-label="Instagram">
+            <div className="mt-3">
+              <a href="https://instagram.com/chaibisket_eats" target="_blank" rel="noreferrer" className="text-[#f5eddc] hover:text-[#ffd9a0] inline-block" aria-label="Instagram">
                 <Instagram className="h-5 w-5" />
-              </a>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer" className="text-[#f5eddc] hover:text-[#ffd9a0]" aria-label="Facebook">
+              </a><a href="https://facebook.com" target="_blank" rel="noreferrer" className="text-[#f5eddc] hover:text-[#ffd9a0] inline-block" aria-label="Facebook">
                 <Facebook className="h-5 w-5" />
               </a>
             </div>
