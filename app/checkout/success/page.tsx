@@ -311,14 +311,14 @@ export default function CheckoutPage() {
               <div className="flex items-center justify-between mb-8 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
                 {[1, 2, 3].map((step) => (
                   <div key={step} className="flex items-center min-w-fit">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${activeStep === step
+                    <div className={`w-10 h-10 md:w-8 md:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${activeStep === step
                       ? 'bg-[#c87534] text-[#120a06]'
                       : activeStep > step
                         ? 'bg-[#1a100b] text-[#c87534] border border-[#c87534]/30'
                         : 'bg-[#1a100b] text-[#f5eddc]/30 border border-[#2d1a11]'
                       }`}>
                       {activeStep > step ? (
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg className="w-5 h-5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                         </svg>
                       ) : (
@@ -326,13 +326,13 @@ export default function CheckoutPage() {
                       )}
                     </div>
                     <div className="ml-2">
-                      <div className={`text-xs md:text-sm font-medium whitespace-nowrap ${activeStep === step ? 'text-[#c87534]' : activeStep > step ? 'text-[#c87534]' : 'text-[#f5eddc]/30'
+                      <div className={`text-sm md:text-sm font-medium whitespace-nowrap ${activeStep === step ? 'text-[#c87534]' : activeStep > step ? 'text-[#c87534]' : 'text-[#f5eddc]/30'
                         }`}>
-                        {step === 1 ? 'Delivery' : step === 2 ? 'Payment' : 'Confirm'}
+                        {step === 1 ? (orderType === 'pickup' ? 'Pickup Info' : 'Delivery') : step === 2 ? 'Payment' : 'Confirm'}
                       </div>
                     </div>
                     {step < 3 && (
-                      <div className={`w-4 md:w-16 h-0.5 mx-2 md:mx-4 ${activeStep > step ? 'bg-[#c87534]/50' : 'bg-[#2d1a11]'
+                      <div className={`w-8 md:w-16 h-0.5 mx-2 md:mx-4 ${activeStep > step ? 'bg-[#c87534]/50' : 'bg-[#2d1a11]'
                         }`}></div>
                     )}
                   </div>
@@ -357,99 +357,101 @@ export default function CheckoutPage() {
                   </h2>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    {orderType === 'delivery' && (
-                      <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Full Name</label>
-                        <input
-                          type="text"
-                          id="name"
-                          name="name"
-                          value={deliveryInfo.name}
-                          onChange={handleDeliveryInfoChange}
-                          className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.name ? 'border-red-500' : 'border-[#2d1a11]'}`}
-                          placeholder="John Doe"
-                        />
-                        {formErrors.name && <p className="text-red-500 text-xs mt-1">{formErrors.name}</p>}
-                      </div>
-                    )}
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Email</label>
+                    {/* Email - Always shown */}
+                    <div className={orderType === 'pickup' ? 'md:col-span-2' : ''}>
+                      <label htmlFor="email" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Email *</label>
                       <input
                         type="email"
                         id="email"
                         name="email"
                         value={deliveryInfo.email}
                         onChange={handleDeliveryInfoChange}
-                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.email ? 'border-red-500' : 'border-[#2d1a11]'}`}
+                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.email ? 'border-red-500' : 'border-[#2d1a11]'}`}
                         placeholder="john@example.com"
                       />
                       {formErrors.email && <p className="text-red-500 text-xs mt-1">{formErrors.email}</p>}
                     </div>
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Phone Number</label>
+
+                    {/* Phone - Always shown */}
+                    <div className={orderType === 'pickup' ? 'md:col-span-2' : ''}>
+                      <label htmlFor="phone" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Phone Number *</label>
                       <input
                         type="tel"
                         id="phone"
                         name="phone"
                         value={deliveryInfo.phone}
                         onChange={handleDeliveryInfoChange}
-                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.phone ? 'border-red-500' : 'border-[#2d1a11]'}`}
+                        className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.phone ? 'border-red-500' : 'border-[#2d1a11]'}`}
                         placeholder="(123) 456-7890"
                       />
                       {formErrors.phone && <p className="text-red-500 text-xs mt-1">{formErrors.phone}</p>}
                     </div>
 
+                    {/* Delivery-only fields */}
                     {orderType === 'delivery' && (
                       <>
-                        <div>
-                          <label htmlFor="address" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Address</label>
+                        <div className="md:col-span-2">
+                          <label htmlFor="name" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Full Name *</label>
+                          <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={deliveryInfo.name}
+                            onChange={handleDeliveryInfoChange}
+                            className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.name ? 'border-red-500' : 'border-[#2d1a11]'}`}
+                            placeholder="John Doe"
+                          />
+                          {formErrors.name && <p className="text-red-500 text-xs mt-1">{formErrors.name}</p>}
+                        </div>
+                        <div className="md:col-span-2">
+                          <label htmlFor="address" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">Street Address *</label>
                           <input
                             type="text"
                             id="address"
                             name="address"
                             value={deliveryInfo.address}
                             onChange={handleDeliveryInfoChange}
-                            className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.address ? 'border-red-500' : 'border-[#2d1a11]'}`}
-                            placeholder="123 Main St"
+                            className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.address ? 'border-red-500' : 'border-[#2d1a11]'}`}
+                            placeholder="123 Main St, Apt 4B"
                           />
                           {formErrors.address && <p className="text-red-500 text-xs mt-1">{formErrors.address}</p>}
                         </div>
                         <div>
-                          <label htmlFor="city" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">City</label>
+                          <label htmlFor="city" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">City *</label>
                           <input
                             type="text"
                             id="city"
                             name="city"
                             value={deliveryInfo.city}
                             onChange={handleDeliveryInfoChange}
-                            className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.city ? 'border-red-500' : 'border-[#2d1a11]'}`}
-                            placeholder="New York"
+                            className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.city ? 'border-red-500' : 'border-[#2d1a11]'}`}
+                            placeholder="Cumming"
                           />
                           {formErrors.city && <p className="text-red-500 text-xs mt-1">{formErrors.city}</p>}
                         </div>
                         <div>
-                          <label htmlFor="state" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">State</label>
+                          <label htmlFor="state" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">State *</label>
                           <input
                             type="text"
                             id="state"
                             name="state"
                             value={deliveryInfo.state}
                             onChange={handleDeliveryInfoChange}
-                            className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.state ? 'border-red-500' : 'border-[#2d1a11]'}`}
-                            placeholder="NY"
+                            className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.state ? 'border-red-500' : 'border-[#2d1a11]'}`}
+                            placeholder="GA"
                           />
                           {formErrors.state && <p className="text-red-500 text-xs mt-1">{formErrors.state}</p>}
                         </div>
-                        <div>
-                          <label htmlFor="zipCode" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">ZIP Code</label>
+                        <div className="md:col-span-2">
+                          <label htmlFor="zipCode" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">ZIP Code *</label>
                           <input
                             type="text"
                             id="zipCode"
                             name="zipCode"
                             value={deliveryInfo.zipCode}
                             onChange={handleDeliveryInfoChange}
-                            className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.zipCode ? 'border-red-500' : 'border-[#2d1a11]'}`}
-                            placeholder="10001"
+                            className={`w-full border bg-[#050302] text-[#f5eddc] rounded-xl px-4 py-3 min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#c87534] ${formErrors.zipCode ? 'border-red-500' : 'border-[#2d1a11]'}`}
+                            placeholder="30041"
                           />
                           {formErrors.zipCode && <p className="text-red-500 text-xs mt-1">{formErrors.zipCode}</p>}
                         </div>
@@ -457,6 +459,7 @@ export default function CheckoutPage() {
                     )}
                   </div>
 
+                  {/* Additional/Delivery Instructions */}
                   <div className="mb-6">
                     <label htmlFor="deliveryInstructions" className="block text-sm font-medium text-[#f5eddc]/80 mb-1">
                       {orderType === 'pickup' ? 'Additional Instructions (Optional)' : 'Delivery Instructions (Optional)'}
@@ -474,7 +477,7 @@ export default function CheckoutPage() {
 
                   <Button
                     onClick={handleContinueToPayment}
-                    className="w-full bg-[#c87534] hover:bg-[#d8843d] text-[#120a06] font-medium py-3 rounded-xl"
+                    className="w-full bg-[#c87534] hover:bg-[#d8843d] text-[#120a06] font-medium py-3 min-h-[48px] rounded-xl"
                   >
                     Continue to Payment
                   </Button>
