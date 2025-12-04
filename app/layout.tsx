@@ -16,7 +16,7 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: "Chai Bisket — an Indian eatery",
-  description: "Biryani is an emotion, chai is for mood.",
+  description: "CHAI is an emotion, biryani is for mood.",
   icons: {
     icon: [
       { url: "/images/logo.jpg" },

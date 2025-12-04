@@ -86,17 +86,17 @@ const LocationSection = () => {
                             </div>
                             <div>
                                 <h3 className="text-xl font-bold text-[#f5eddc] mb-2">Opening Hours</h3>
-                                <ul className="space-y-2 text-[#f5eddc]/80">
-                                    <li className="flex justify-between w-full min-w-[200px]">
+                                <ul className="space-y-4 text-[#f5eddc]/80">
+                                    <li className="flex justify-between w-full">
                                         <span>Mon - Thu</span>
-                                        <span>11:00 AM - 10:00 PM</span>
+                                        <span className="ml-2">11:00 AM - 10:00 PM</span>
                                     </li>
-                                    <li className="flex justify-between w-full min-w-[200px]">
+                                    <li className="flex justify-between w-full">
                                         <span>Fri - Sat</span>
                                         <span>11:00 AM - 11:00 PM</span>
                                     </li>
-                                    <li className="flex justify-between w-full min-w-[200px]">
-                                        <span>Sunday</span>
+                                    <li className="flex justify-between w-full">
+                                        <span>Sun</span>
                                         <span>11:00 AM - 10:00 PM</span>
                                     </li>
                                 </ul>

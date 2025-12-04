@@ -353,7 +353,7 @@ export default function Page() {
                 <span className="relative z-10 text-[#f0a35c]">emotion</span>
                 <span className="absolute inset-x-0 bottom-1 h-[12px] bg-[#f0a35c]/20 -z-0"></span>
               </span>
-              , chai is the{" "}
+              , Chai is the{" "}
               <span className="relative inline-block px-2">
                 <span className="relative z-10 text-[#d97a3a]">mood.</span>
                 <span className="absolute inset-x-0 bottom-1 h-[12px] bg-[#d97a3a]/25 -z-0"></span>
@@ -362,7 +362,7 @@ export default function Page() {
 
             <p className="mt-5 sm:mt-7 text-base sm:text-lg md:text-xl text-[#f5eddc]/85 max-w-2xl leading-relaxed">
               Stories of warmth, spice, and soulful nostalgia.
-              From Irani chai to Osmania biscuits, we pour authentic tradition and comfort into every cup and plate.
+              From Irani CHAI to Osmania biscuits, we pour authentic tradition and comfort into every cup and plate.
             </p>
 
             <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -378,23 +378,25 @@ export default function Page() {
               </Button>
               <Button
                 variant="outline"
-                className="py-5 sm:py-6 px-6 sm:px-8 text-base font-medium rounded-full transition-all duration-300 cursor-default hover:bg-transparent"
+                className="py-5 sm:py-6 px-6 sm:px-8 text-base font-medium rounded-full transition-all duration-300 hover:bg-transparent"
                 size="lg"
+                asChild
               >
-                <div className="flex items-center justify-center sm:justify-start gap-2">
+                <a href="#menu" className="flex items-center justify-center sm:justify-start gap-2">
                   <ShoppingBag className="h-5 w-5" />
                   Pickup
-                </div>
+                </a>
               </Button>
               <Button
                 variant="outline"
-                className="py-5 sm:py-6 px-6 sm:px-8 text-base font-medium rounded-full transition-all duration-300 cursor-default hover:bg-transparent"
+                className="py-5 sm:py-6 px-6 sm:px-8 text-base font-medium rounded-full transition-all duration-300 hover:bg-transparent"
                 size="lg"
+                asChild
               >
-                <div className="flex items-center justify-center sm:justify-start gap-2">
+                <a href="/cart" className="flex items-center justify-center sm:justify-start gap-2">
                   <Truck className="h-5 w-5" />
                   Delivery
-                </div>
+                </a>
               </Button>
             </div>
 
@@ -439,7 +441,7 @@ export default function Page() {
       <div className="hidden md:block relative overflow-hidden bg-[#120a07]">
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#120a07] via-transparent to-[#120a07] z-10" />
         <div className="whitespace-nowrap animate-[marquee_20s_linear_infinite] py-3 text-sm font-medium text-[#f5eddc]/80 md:animate-[marquee_30s_linear_infinite]">
-          <span className="mx-4 md:mx-8">Irani Chai</span>
+          <span className="mx-4 md:mx-8">Irani CHAI</span>
           <span className="mx-4 md:mx-8">Osmania Biscuits</span>
           <span className="mx-4 md:mx-8">Hyderabadi Biryani</span>
           <span className="mx-4 md:mx-8">Samosa & Cutlets</span>
@@ -449,7 +451,7 @@ export default function Page() {
           <span className="mx-4 md:mx-8">Kulfi & Falooda</span>
 
           {/* Duplicate items for seamless loop - hidden on mobile */}
-          <span className="hidden md:inline-block mx-4 md:mx-8">Irani Chai</span>
+          <span className="hidden md:inline-block mx-4 md:mx-8">Irani CHAI</span>
           <span className="hidden md:inline-block mx-4 md:mx-8">Osmania Biscuits</span>
           <span className="hidden md:inline-block mx-4 md:mx-8">Hyderabadi Biryani</span>
           <span className="hidden md:inline-block mx-4 md:mx-8">Samosa & Cutlets</span>
@@ -722,7 +724,8 @@ export default function Page() {
               </div>
             </div>
             <p className="mt-3 text-[#f5eddc]/70 text-sm max-w-sm leading-relaxed">
-              Welcome to your new chai adda in Cumming. We bring you the authentic flavors of Hyderabad, from our signature Irani Chai to crispy Osmania biscuits and spicy Biryani. A place for good conversations, great food, and warm memories.
+              Welcome to your new adda in Cumming - a vibrant celebration of India in every flavor.
+We cook with passion, season with nostalgia and serve with love so that each bite feels like home, no matter how far you&nbsp;are&nbsp;from&nbsp;it.
             </p>
           </div>
           <div>
@@ -738,7 +741,7 @@ export default function Page() {
             <div className="font-semibold mb-3">Find Us</div>
             <div className="text-sm text-[#f5eddc]/70 flex items-start gap-2"><MapPin className="h-4 w-4 mt-1" /> 911 Market Pl Blvd, Suite L, Cumming, GA 30041</div>
             <div className="text-sm text-[#f5eddc]/70 mt-2 flex items-center gap-2"><Phone className="h-4 w-4" /> +1 (943) 204-0168</div>
-            <div className="flex gap-4 mt-4">
+            <div className="flex mt-3">
               <a href="https://instagram.com/chaibisket_eats" target="_blank" rel="noreferrer" className="text-[#f5eddc] hover:text-[#ffd9a0]" aria-label="Instagram">
                 <Instagram className="h-5 w-5" />
               </a>
