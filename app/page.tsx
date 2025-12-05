@@ -449,7 +449,7 @@ export default function Page() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif font-bold leading-tight tracking-tight text-[#f5eddc] drop-shadow-[0_6px_25px_rgba(0,0,0,0.45)]">
               Chai Bisket is more than a restaurant —{" "}
               <span className="relative inline-block px-2">
-                <span className="relative z-10 text-[#f0a35c]">it's a feeling</span>
+                <span className="relative z-10 text-[#f0a35c]">it&apos;s a feeling</span>
                 <span className="absolute inset-x-0 bottom-1 h-[12px] bg-[#f0a35c]/20 -z-0"></span>
               </span>
             </h1>
@@ -851,7 +851,7 @@ export default function Page() {
               Get in Touch
             </h2>
             <p className="text-[#f5eddc]/80 max-w-2xl mx-auto">
-              Have a question or planning an event? We're here to help make your experience memorable.
+              Have a question or planning an event? We&apos;re here to help make your experience memorable.
             </p>
           </div>
 
