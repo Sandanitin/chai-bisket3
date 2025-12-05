@@ -2,7 +2,6 @@ import "./../styles/globals.css";
 import type { Metadata } from "next";
 import { Playfair_Display, Outfit } from "next/font/google";
 import { Toaster } from 'react-hot-toast';
-import { ThemeProvider } from '@/contexts/ThemeContext';
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -33,29 +32,27 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${playfair.variable} ${outfit.variable} scroll-smooth`}>
-      <body className="min-h-screen pointer-events-auto antialiased font-sans bg-[#050302] dark:bg-[#050302] light:bg-white text-[#f5eddc] dark:text-[#f5eddc] light:text-[#050302]">
-        <ThemeProvider>
-          {children}
-          <Toaster
-            position="top-center"
-            toastOptions={{
-              duration: 3000,
-              style: {
-                background: '#120a07',
-                color: '#f5eddc',
-                border: '1px solid #2d1a11',
-                borderRadius: '12px',
-                padding: '16px',
+      <body className="min-h-screen pointer-events-auto antialiased font-sans bg-[#050302] text-[#f5eddc]">
+        {children}
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: '#120a07',
+              color: '#f5eddc',
+              border: '1px solid #2d1a11',
+              borderRadius: '12px',
+              padding: '16px',
+            },
+            success: {
+              iconTheme: {
+                primary: '#f0a35c',
+                secondary: '#120a07',
               },
-              success: {
-                iconTheme: {
-                  primary: '#f0a35c',
-                  secondary: '#120a07',
-                },
-              },
-            }}
-          />
-        </ThemeProvider>
+            },
+          }}
+        />
       </body>
     </html>
   );

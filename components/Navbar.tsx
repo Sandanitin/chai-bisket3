@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import ThemeToggle from '@/components/ThemeToggle';
 
 interface NavbarProps {
   cartCount: number;
@@ -89,9 +88,6 @@ const Navbar = ({ cartCount }: NavbarProps) => {
 
           {/* Right Side Buttons */}
           <div className="flex items-center space-x-3">
-            {/* Theme Toggle */}
-            <ThemeToggle />
-
             {/* Cart */}
             <Button
               variant="ghost"
