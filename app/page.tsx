@@ -374,12 +374,12 @@ function TestimonialsCarousel() {
                 <div
                   key={`${testimonial.originalIndex}-${currentIndex}`}
                   className={`absolute transition-all duration-500 ease-in-out ${isActive
-                      ? "z-20 scale-100 opacity-100 translate-x-0"
-                      : isLeft
-                        ? "z-10 scale-85 opacity-60 -translate-x-3/4 md:-translate-x-1/2"
-                        : isRight
-                          ? "z-10 scale-85 opacity-60 translate-x-3/4 md:translate-x-1/2"
-                          : "z-0 scale-75 opacity-0"
+                    ? "z-20 scale-100 opacity-100 translate-x-0"
+                    : isLeft
+                      ? "z-10 scale-85 opacity-60 -translate-x-3/4 md:-translate-x-1/2"
+                      : isRight
+                        ? "z-10 scale-85 opacity-60 translate-x-3/4 md:translate-x-1/2"
+                        : "z-0 scale-75 opacity-0"
                     }`}
                 >
                   <Card className={`w-72 md:w-96 h-72 md:h-80 border-2 ${isActive ? "border-[#f0a35c]/30 shadow-2xl bg-[#120a07]" : "border-transparent bg-[#120a07]"
@@ -427,8 +427,8 @@ function TestimonialsCarousel() {
                 key={index}
                 onClick={() => goToSlide(index)}
                 className={`h-2 md:h-3 rounded-full transition-all duration-300 ${index === currentIndex
-                    ? "bg-[#f0a35c] w-4 md:w-8"
-                    : "bg-[#f0a35c]/30 hover:bg-[#f0a35c]/50 w-2 md:w-3"
+                  ? "bg-[#f0a35c] w-4 md:w-8"
+                  : "bg-[#f0a35c]/30 hover:bg-[#f0a35c]/50 w-2 md:w-3"
                   }`}
                 aria-label={`Go to testimonial ${index + 1}`}
               />
@@ -901,19 +901,19 @@ export default function Page() {
             </Card>
 
             {/* Catering Quote Form */}
-            <Card className="rounded-3xl bg-[#120a07] border-[#2d1a11]">
-              <CardHeader>
+            <Card className="rounded-3xl bg-[#120a07] border-[#2d1a11] h-fit">
+              <CardHeader className="pt-4 pb-1">
                 <CardTitle className="text-2xl font-serif text-[#f5eddc]">Hosting a Party?</CardTitle>
-                <p className="text-[#f5eddc]/70 text-sm mt-2">
+                <p className="text-[#f5eddc]/70 text-sm mt-1">
                   From chai counters to biryani bars — we cater birthdays, office events, and desi celebrations.
                 </p>
-                <ul className="text-[#f5eddc]/70 text-sm mt-3 space-y-1">
+                <ul className="text-[#f5eddc]/70 text-sm mt-1 mb-3 space-y-1">
                   <li>• Customizable menus</li>
                   <li>• Bulk chai, biscuits & snacks</li>
                   <li>• On-site live stations</li>
                 </ul>
               </CardHeader>
-              <CardContent>
+              <CardContent className="px-6 pt-0 pb-0">
                 <Button
                   onClick={() => {
                     const message = encodeURIComponent("Hi! I'd like to get a catering quote for my event. Please contact me with details and pricing.");
