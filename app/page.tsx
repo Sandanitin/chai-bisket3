@@ -1,11 +1,11 @@
 "use client";
 export const dynamic = "force-dynamic";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Clock, Phone, Instagram, Utensils, Leaf, Coffee, Sandwich, Sprout, ShoppingCart, Facebook, ShoppingBag, Truck } from "lucide-react";
+import { MapPin, Clock, Phone, Instagram, Utensils, Leaf, Coffee, Sandwich, Sprout, ShoppingCart, Facebook, ShoppingBag, Truck, ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import Menu from "@/components/Menu";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
@@ -280,6 +280,174 @@ function CateringQuoteForm() {
   );
 }
 
+// Testimonials Carousel Component
+function TestimonialsCarousel() {
+  const testimonials = [
+    {
+      name: "Priya Sharma",
+      role: "Food Blogger",
+      rating: 5,
+      text: "The Hyderabadi Biryani here is the closest I've found to my grandmother's recipe. Authentic flavors that transport you straight to the streets of Hyderabad.",
+    },
+    {
+      name: "Rahul Mehta",
+      role: "Local Resident",
+      rating: 5,
+      text: "Their Irani Chai paired with Osmania biscuits is my daily ritual. The perfect start to any day, reminding me of the chai stalls back home in Mumbai.",
+    },
+    {
+      name: "Anita Desai",
+      role: "Catering Client",
+      rating: 5,
+      text: "We hired Chai Bisket for our corporate event and they exceeded expectations. The live biryani station was a huge hit, and the service was impeccable!",
+    },
+    {
+      name: "Vikram Singh",
+      role: "Regular Customer",
+      rating: 5,
+      text: "Every visit feels like coming home. The warm hospitality and authentic flavors make this my favorite spot in town for Indian cuisine.",
+    },
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const nextSlide = useCallback(() => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+    setTimeout(() => setIsAnimating(false), 500);
+  }, [isAnimating, testimonials.length]);
+
+  const prevSlide = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
+    setTimeout(() => setIsAnimating(false), 500);
+  };
+
+  const goToSlide = (index: number) => {
+    if (isAnimating || index === currentIndex) return;
+    setIsAnimating(true);
+    setCurrentIndex(index);
+    setTimeout(() => setIsAnimating(false), 500);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [nextSlide]);
+
+  const getVisibleTestimonials = () => {
+    const items = [];
+    for (let i = 0; i < 3; i++) {
+      const index = (currentIndex + i) % testimonials.length;
+      items.push({ ...testimonials[index], originalIndex: index });
+    }
+    return items;
+  };
+
+  return (
+    <Container>
+      <div className="text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#f5eddc] mb-4">
+          What Our Customers Say
+        </h2>
+        <p className="text-[#f5eddc]/80 max-w-2xl mx-auto">
+          Don&apos;t just take our word for it — hear from our cherished customers
+        </p>
+      </div>
+
+      <div className="relative max-w-6xl mx-auto">
+        {/* Main carousel */}
+        <div className="relative h-80 md:h-96 mb-6 md:mb-8">
+          <div className="absolute inset-0 flex items-center justify-center">
+            {getVisibleTestimonials().map((testimonial, index) => {
+              const position = index - 1;
+              const isActive = position === 0;
+              const isLeft = position === -1;
+              const isRight = position === 1;
+
+              return (
+                <div
+                  key={`${testimonial.originalIndex}-${currentIndex}`}
+                  className={`absolute transition-all duration-500 ease-in-out ${isActive
+                      ? "z-20 scale-100 opacity-100 translate-x-0"
+                      : isLeft
+                        ? "z-10 scale-85 opacity-60 -translate-x-3/4 md:-translate-x-1/2"
+                        : isRight
+                          ? "z-10 scale-85 opacity-60 translate-x-3/4 md:translate-x-1/2"
+                          : "z-0 scale-75 opacity-0"
+                    }`}
+                >
+                  <Card className={`w-72 md:w-96 h-72 md:h-80 border-2 ${isActive ? "border-[#f0a35c]/30 shadow-2xl bg-[#120a07]" : "border-transparent bg-[#120a07]"
+                    } transition-all duration-300`}>
+                    <CardContent className="p-4 md:p-6 h-full flex flex-col justify-between space-y-3 md:space-y-4">
+                      <div className="space-y-3 md:space-y-4">
+                        <Quote className="w-6 h-6 md:w-8 md:h-8 text-[#f0a35c]/30 absolute top-3 right-3 md:top-4 md:right-4" />
+                        <div className="flex items-center justify-center gap-1">
+                          {Array.from({ length: testimonial.rating }).map((_, i) => (
+                            <Star key={i} className="w-4 h-4 md:w-5 md:h-5 fill-[#f0a35c] text-[#f0a35c]" />
+                          ))}
+                        </div>
+                        <blockquote className={`text-[#f5eddc] italic leading-relaxed ${isActive ? "text-sm md:text-lg" : "text-xs md:text-base"
+                          } transition-all duration-300`}>
+                          <p>&ldquo;{testimonial.text}&rdquo;</p>
+                        </blockquote>
+                      </div>
+                      <div className="pt-3 md:pt-4 border-t border-[#2d1a11]">
+                        <div className="font-semibold text-[#f5eddc] text-sm md:text-base">{testimonial.name}</div>
+                        <p className="text-xs md:text-sm text-[#f0a35c]">{testimonial.role}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Navigation controls */}
+        <div className="flex items-center justify-between gap-2 md:gap-4 px-2 md:px-0">
+          <button
+            onClick={prevSlide}
+            className="p-2 md:p-3 rounded-full bg-[#120a07] hover:bg-[#1a100b] border border-[#2d1a11] transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isAnimating}
+            aria-label="Previous testimonial"
+          >
+            <ChevronLeft className="w-4 h-4 md:w-6 md:h-6 text-[#f0a35c]" />
+          </button>
+
+          {/* Dots indicator */}
+          <div className="flex gap-1.5 md:gap-2 justify-center flex-1">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`h-2 md:h-3 rounded-full transition-all duration-300 ${index === currentIndex
+                    ? "bg-[#f0a35c] w-4 md:w-8"
+                    : "bg-[#f0a35c]/30 hover:bg-[#f0a35c]/50 w-2 md:w-3"
+                  }`}
+                aria-label={`Go to testimonial ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={nextSlide}
+            className="p-2 md:p-3 rounded-full bg-[#120a07] hover:bg-[#1a100b] border border-[#2d1a11] transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isAnimating}
+            aria-label="Next testimonial"
+          >
+            <ChevronRight className="w-4 h-4 md:w-6 md:h-6 text-[#f0a35c]" />
+          </button>
+        </div>
+      </div>
+    </Container>
+  );
+}
 
 export default function Page() {
   const router = useRouter();
@@ -697,144 +865,7 @@ export default function Page() {
 
       {/* TESTIMONIALS */}
       <Section id="testimonials" className="bg-[#0b0503]">
-        <Container>
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#f5eddc] mb-4">
-              What Our Customers Say
-            </h2>
-            <p className="text-[#f5eddc]/80 max-w-2xl mx-auto">
-              Do not just take our word for it &#8212; hear from our cherished customers
-            </p>
-          </div>
-
-          {/* Infinite Scrolling Testimonials */}
-          <div className="relative overflow-hidden">
-            <style jsx>{`
-              @keyframes scroll {
-                0% {
-                  transform: translateX(0);
-                }
-                100% {
-                  transform: translateX(-50%);
-                }
-              }
-              .animate-scroll {
-                animation: scroll 20s linear infinite;
-              }
-              .animate-scroll:hover {
-                animation-play-state: paused;
-              }
-            `}</style>
-
-            <div className="flex animate-scroll gap-6">
-              {/* Original testimonials */}
-              {[
-                {
-                  name: "Priya Sharma",
-                  role: "Food Blogger",
-                  text: `"The Hyderabadi Biryani here is the closest I've found to my grandmother's recipe. Authentic flavors that transport you straight to the streets of Hyderabad."`,
-                },
-                {
-                  name: "Rahul Mehta",
-                  role: "Local Resident",
-                  text: `"Their Irani Chai paired with Osmania biscuits is my daily ritual. The perfect start to any day, reminding me of the chai stalls back home in Mumbai."`,
-                },
-                {
-                  name: "Anita Desai",
-                  role: "Catering Client",
-                  text: `"We hired Chai Bisket for our corporate event and they exceeded expectations. The live biryani station was a huge hit, and the service was impeccable!"`,
-                },
-                {
-                  name: "Vikram Singh",
-                  role: "Regular Customer",
-                  text: `"Every visit feels like coming home. The warm hospitality and authentic flavors make this my favorite spot in town for Indian cuisine."`,
-                },
-              ].map((item, index) => (
-                <div
-                  key={`original-${index}`}
-                  className="bg-[#120a07] rounded-2xl p-6 border border-[#2d1a11] shadow-lg flex-shrink-0 w-[350px] md:w-[400px]"
-                >
-                  {/* Name + Role */}
-                  <div className="mb-4">
-                    <h4 className="text-lg font-bold text-[#f5eddc]">{item.name}</h4>
-                    <p className="text-[#f0a35c] text-sm">{item.role}</p>
-                  </div>
-
-                  {/* Stars */}
-                  <div className="flex mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <svg
-                        key={i}
-                        className="w-5 h-5 text-[#f0a35c]"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-
-                  {/* Text */}
-                  <p className="text-[#f5eddc]/80 italic">{item.text}</p>
-                </div>
-              ))}
-
-              {/* Duplicate testimonials for seamless loop */}
-              {[
-                {
-                  name: "Priya Sharma",
-                  role: "Food Blogger",
-                  text: `"The Hyderabadi Biryani here is the closest I've found to my grandmother's recipe. Authentic flavors that transport you straight to the streets of Hyderabad."`,
-                },
-                {
-                  name: "Rahul Mehta",
-                  role: "Local Resident",
-                  text: `"Their Irani Chai paired with Osmania biscuits is my daily ritual. The perfect start to any day, reminding me of the chai stalls back home in Mumbai."`,
-                },
-                {
-                  name: "Anita Desai",
-                  role: "Catering Client",
-                  text: `"We hired Chai Bisket for our corporate event and they exceeded expectations. The live biryani station was a huge hit, and the service was impeccable!"`,
-                },
-                {
-                  name: "Vikram Singh",
-                  role: "Regular Customer",
-                  text: `"Every visit feels like coming home. The warm hospitality and authentic flavors make this my favorite spot in town for Indian cuisine."`,
-                },
-              ].map((item, index) => (
-                <div
-                  key={`duplicate-${index}`}
-                  className="bg-[#120a07] rounded-2xl p-6 border border-[#2d1a11] shadow-lg flex-shrink-0 w-[350px] md:w-[400px]"
-                >
-                  {/* Name + Role */}
-                  <div className="mb-4">
-                    <h4 className="text-lg font-bold text-[#f5eddc]">{item.name}</h4>
-                    <p className="text-[#f0a35c] text-sm">{item.role}</p>
-                  </div>
-
-                  {/* Stars */}
-                  <div className="flex mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <svg
-                        key={i}
-                        className="w-5 h-5 text-[#f0a35c]"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-
-                  {/* Text */}
-                  <p className="text-[#f5eddc]/80 italic">{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <p className="text-center text-[#f5eddc]/50 text-sm mt-6">Hover to pause</p>
-        </Container>
+        <TestimonialsCarousel />
       </Section>
 
 
@@ -882,6 +913,17 @@ export default function Page() {
                   <li>• On-site live stations</li>
                 </ul>
               </CardHeader>
+              <CardContent>
+                <Button
+                  onClick={() => {
+                    const message = encodeURIComponent("Hi! I'd like to get a catering quote for my event. Please contact me with details and pricing.");
+                    window.open(`https://wa.me/19432040168?text=${message}`, '_blank');
+                  }}
+                  className="w-full bg-gradient-to-r from-[#f0a35c] to-[#d97a3a] hover:from-[#f5b97a] hover:to-[#e08a4a]"
+                >
+                  Get catering quote
+                </Button>
+              </CardContent>
             </Card>
           </div>
 

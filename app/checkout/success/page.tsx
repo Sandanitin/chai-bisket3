@@ -125,13 +125,15 @@ export default function CheckoutPage() {
 
   const validateDeliveryInfo = () => {
     const errors: Record<string, string> = {};
-    if (!deliveryInfo.name.trim()) errors.name = "Name is required";
+
+    // Always validate email and phone
     if (!deliveryInfo.email.trim()) errors.email = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(deliveryInfo.email)) errors.email = "Email is invalid";
     if (!deliveryInfo.phone.trim()) errors.phone = "Phone is required";
 
-    // Only validate address if delivery is selected
+    // Only validate name and address fields if delivery is selected
     if (orderType === 'delivery') {
+      if (!deliveryInfo.name.trim()) errors.name = "Name is required";
       if (!deliveryInfo.address.trim()) errors.address = "Address is required";
       if (!deliveryInfo.city.trim()) errors.city = "City is required";
       if (!deliveryInfo.state.trim()) errors.state = "State is required";

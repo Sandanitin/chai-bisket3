@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen pointer-events-auto antialiased font-sans bg-[#050302] text-[#f5eddc]">
         {children}
         <Toaster
-          position="top-center"
+          position="bottom-center"
           toastOptions={{
             duration: 3000,
             style: {
