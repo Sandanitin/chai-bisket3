@@ -185,6 +185,13 @@ const Navbar = ({ cartCount }: NavbarProps) => {
               Location
             </a>
             <a
+              href="#catering-card"
+              className="block py-3 text-[#f5eddc]"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Catering
+            </a>
+            <a
               href="#write-to-us"
               className="block py-3 text-[#f5eddc]"
               onClick={() => setIsMenuOpen(false)}
