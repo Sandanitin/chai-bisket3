@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-const TO = process.env.CONTACT_TO || "chaibisketllc@gmail.com";
+const TO = process.env.CONTACT_TO || "Support@chaibisketeats.com";
 const CC = process.env.CONTACT_CC || "";
 const SHEETS_WEBHOOK_URL = process.env.SHEETS_WEBHOOK_URL || "";
 const FROM = process.env.CONTACT_FROM || "Chai Bisket <onboarding@resend.dev>";
