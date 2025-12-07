@@ -119,9 +119,21 @@ const LocationSection = () => {
                 <h3 className="text-xl font-bold text-[#f5eddc] mb-2">
                   Contact
                 </h3>
-                <p className="text-[#f5eddc]/80 mb-2">+1 (943) 204-0168</p>
                 <p className="text-[#f5eddc]/80 mb-2">
-                  Support@chaibisketeats.com
+                  <a
+                    href="tel:+19432040168"
+                    className="hover:text-[#f5eddc] transition-colors"
+                  >
+                    +1 (943) 204-0168
+                  </a>
+                </p>
+                <p className="text-[#f5eddc]/80 mb-2">
+                  <a
+                    href="mailto:Support@chaibisketeats.com"
+                    className="hover:text-[#f5eddc] transition-colors"
+                  >
+                    Support@chaibisketeats.com
+                  </a>
                 </p>
                 <p className="text-[#f5eddc]/60 text-sm">
                   Call us for takeout orders and catering orders.

@@ -749,11 +749,14 @@ export default function Page() {
             </span>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif font-bold leading-tight tracking-tight text-[#f5eddc] drop-shadow-[0_6px_25px_rgba(0,0,0,0.45)]">
-              Biriyani is an emotion —{" "}
+              Biryani is an
               <span className="relative inline-block px-2">
-                <span className="relative z-10 text-[#f0a35c]">
-                  Chai is a mood
-                </span>
+                <span className="relative z-10 text-[#f0a35c]">emotion</span>
+                <span className="absolute inset-x-0 bottom-1 h-[12px] bg-[#f0a35c]/20 -z-0"></span>
+              </span>
+              — Chai is the
+              <span className="relative inline-block px-2">
+                <span className="relative z-10 text-[#f0a35c]">mood</span>
                 <span className="absolute inset-x-0 bottom-1 h-[12px] bg-[#f0a35c]/20 -z-0"></span>
               </span>
             </h1>
@@ -1052,7 +1055,14 @@ export default function Page() {
             <p className="mt-3 text-[#f5eddc]/70">
               Swipe through the vibe — tag us{" "}
               <span className="font-semibold text-[#f0a35c]">
-                @chaibisket_eats
+                <a
+                  href="https://instagram.com/chaibisket_eats"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-[#f0a35c] hover:underline hover:text-[#e0924b] transition-colors"
+                >
+                  @chaibisket_eats
+                </a>
               </span>{" "}
               on Instagram to get featured!
             </p>
@@ -1263,8 +1273,15 @@ export default function Page() {
               Cumming, GA 30041
             </div>
             <div className="text-sm text-[#f5eddc]/70 mt-2 flex items-center gap-2">
-              <Phone className="h-4 w-4" /> +1 (943) 204-0168
+              <Phone className="h-4 w-4" />
+              <a
+                href="tel:+19432040168"
+                className="hover:text-[#f5eddc] transition-colors"
+              >
+                +1 (943) 204-0168
+              </a>
             </div>
+
             <div className="mt-3">
               <a
                 href="https://instagram.com/chaibisket_eats"

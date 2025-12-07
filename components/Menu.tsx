@@ -1,52 +1,48 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { Plus, ShoppingCart, ChevronDown, ChevronLeft, ChevronRight, List, Search } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { menuItems } from '@/app/data/menuItems';
-import toast from 'react-hot-toast';
+import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import {
+  Plus,
+  ShoppingCart,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  List,
+  Search,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { menuItems } from "@/app/data/menuItems";
+import toast from "react-hot-toast";
 
 const categoryTabs = [
-  'Appetizers',
-  'Burgers',
-  'Rolls',
-  'Frankies',
-  'Biriyani',
-  'Curries',
-  'Snacks',
-  'Mandi',
-  'Indo-Chinese',
-  'Breakfast',
-  'Desserts',
-  'Shakes',
-  'Drinks',
+  "Appetizers",
+  "Burgers",
+  "Rolls",
+  "Frankies",
+  "Biryani",
+  "Curries",
+  "Snacks",
+  "Mandi",
+  "Indo-Chinese",
+  "Breakfast",
+  "Desserts",
+  "Shakes",
+  "Drinks",
 ];
 
 const collectionOptions = [
-  { label: 'Full Menu', value: 'full', hours: '10:30 AM – 10:00 PM' },
-  { label: 'Main Course', value: 'main', hours: '12:00 PM – 10:00 PM' },
-  { label: 'Quick Bites', value: 'quick', hours: '10:30 AM – 11:00 PM' },
+  { label: "Full Menu", value: "full", hours: "10:30 AM – 10:00 PM" },
+  { label: "Main Course", value: "main", hours: "12:00 PM – 10:00 PM" },
+  { label: "Quick Bites", value: "quick", hours: "10:30 AM – 11:00 PM" },
 ];
 
 // Map each collection to the categories it should show
 const collectionCategoryMap: Record<string, string[]> = {
   full: categoryTabs,
-  main: [
-    'Biriyani',
-    'Curries',
-    'Mandi',
-    'Indo-Chinese',
-  ],
-  quick: [
-    'Appetizers',
-    'Burgers',
-    'Rolls',
-    'Frankies',
-    'Snacks',
-    'Breakfast',
-  ],
+  main: ["Biryani", "Curries", "Mandi", "Indo-Chinese"],
+  quick: ["Appetizers", "Burgers", "Rolls", "Frankies", "Snacks", "Breakfast"],
 };
 
 interface MenuProps {
@@ -56,8 +52,8 @@ interface MenuProps {
 const Menu = ({ onCartUpdate }: MenuProps) => {
   const router = useRouter();
   const [activeCategory, setActiveCategory] = useState(categoryTabs[0]);
-  const [activeCollection, setActiveCollection] = useState('full');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [activeCollection, setActiveCollection] = useState("full");
+  const [searchTerm, setSearchTerm] = useState("");
   const [cart, setCart] = useState<{ id: number; quantity: number }[]>([]);
   const [isClient, setIsClient] = useState(false);
   const categoryScrollRef = useRef<HTMLDivElement>(null);
@@ -68,12 +64,12 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
 
   useEffect(() => {
     setIsClient(true);
-    const savedCart = localStorage.getItem('cart');
+    const savedCart = localStorage.getItem("cart");
     if (savedCart) {
       try {
         setCart(JSON.parse(savedCart));
       } catch (error) {
-        console.error('Failed to parse cart from localStorage', error);
+        console.error("Failed to parse cart from localStorage", error);
       }
     }
   }, []);
@@ -88,12 +84,12 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
     };
 
     updateScrollState();
-    el.addEventListener('scroll', updateScrollState);
-    window.addEventListener('resize', updateScrollState);
+    el.addEventListener("scroll", updateScrollState);
+    window.addEventListener("resize", updateScrollState);
 
     return () => {
-      el.removeEventListener('scroll', updateScrollState);
-      window.removeEventListener('resize', updateScrollState);
+      el.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
     };
   }, []);
 
@@ -107,8 +103,8 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // When collection changes, make sure activeCategory stays within that collection
@@ -121,27 +117,29 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
     );
   }, [activeCollection]);
 
-  const scrollCategories = (direction: 'left' | 'right') => {
+  const scrollCategories = (direction: "left" | "right") => {
     const el = categoryScrollRef.current;
     if (!el) return;
-    const offset = direction === 'left' ? -260 : 260;
-    el.scrollBy({ left: offset, behavior: 'smooth' });
+    const offset = direction === "left" ? -260 : 260;
+    el.scrollBy({ left: offset, behavior: "smooth" });
   };
 
   const addToCart = (itemId: number) => {
     const item = menuItems.find((menuItem) => menuItem.id === itemId);
-    const itemName = item?.name || 'Item';
+    const itemName = item?.name || "Item";
 
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.id === itemId);
       const updatedCart = existingItem
         ? prevCart.map((item) =>
-          item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
-        )
+            item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
+          )
         : [...prevCart, { id: itemId, quantity: 1 }];
 
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
-      window.dispatchEvent(new CustomEvent('cartUpdated', { detail: { cart: updatedCart } }));
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      window.dispatchEvent(
+        new CustomEvent("cartUpdated", { detail: { cart: updatedCart } })
+      );
       onCartUpdate?.();
 
       // Show toast notification
@@ -151,7 +149,8 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
     });
   };
 
-  const getCartCount = () => cart.reduce((total, item) => total + item.quantity, 0);
+  const getCartCount = () =>
+    cart.reduce((total, item) => total + item.quantity, 0);
 
   const normalizedSearch = searchTerm.trim().toLowerCase();
   const searchActive = normalizedSearch.length > 0;
@@ -172,24 +171,34 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
   });
 
   const currentCollection =
-    collectionOptions.find((option) => option.value === activeCollection) ?? collectionOptions[0];
+    collectionOptions.find((option) => option.value === activeCollection) ??
+    collectionOptions[0];
 
   return (
     <section className="py-12 sm:py-16 bg-transparent text-[#f5eddc]">
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
         <div className="mb-6 sm:mb-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#f5eddc]">Our Menu</h2>
-          <p className="text-[#f5eddc]/80 max-w-2xl mx-auto mt-2">Explore our authentic Indian dishes and beverages</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#f5eddc]">
+            Our Menu
+          </h2>
+          <p className="text-[#f5eddc]/80 max-w-2xl mx-auto mt-2">
+            Explore our authentic Indian dishes and beverages
+          </p>
         </div>
         <div className="mb-8 sm:mb-12 rounded-3xl border border-[#2d1a11] bg-[#0b0503] text-[#f5eddc] p-4 sm:p-6 shadow-[0_25px_60px_rgba(0,0,0,0.4)]">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-              <div className="flex items-center gap-4" ref={collectionDropdownRef}>
+              <div
+                className="flex items-center gap-4"
+                ref={collectionDropdownRef}
+              >
                 <button className="h-10 w-10 sm:h-12 sm:w-12 rounded-full border border-[#2d1a11] bg-[#120a07] text-[#f5eddc] flex items-center justify-center shadow-md">
                   <List className="h-4 w-4 sm:h-5 sm:w-5" />
                 </button>
                 <div className="relative">
-                  <div className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[#f5eddc]/50">Collection</div>
+                  <div className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[#f5eddc]/50">
+                    Collection
+                  </div>
                   <button
                     type="button"
                     onClick={() => setIsCollectionOpen((prev) => !prev)}
@@ -197,7 +206,9 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
                   >
                     {currentCollection.label}
                     <ChevronDown
-                      className={`h-3 w-3 sm:h-4 sm:w-4 transition-transform ${isCollectionOpen ? 'rotate-180' : ''}`}
+                      className={`h-3 w-3 sm:h-4 sm:w-4 transition-transform ${
+                        isCollectionOpen ? "rotate-180" : ""
+                      }`}
                     />
                   </button>
                   {isCollectionOpen && (
@@ -209,15 +220,20 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
                             setActiveCollection(option.value);
                             setIsCollectionOpen(false);
                           }}
-                          className={`block w-full text-left px-3 py-2 sm:px-4 sm:py-3 hover:bg-[#1c0a05] ${option.value === activeCollection ? 'text-[#c87534]' : 'text-[#f5eddc]'
-                            }`}
+                          className={`block w-full text-left px-3 py-2 sm:px-4 sm:py-3 hover:bg-[#1c0a05] ${
+                            option.value === activeCollection
+                              ? "text-[#c87534]"
+                              : "text-[#f5eddc]"
+                          }`}
                         >
                           {option.label}
                         </button>
                       ))}
                     </div>
                   )}
-                  <div className="text-[10px] sm:text-xs text-[#f5eddc]/60 mt-1">{currentCollection.hours}</div>
+                  <div className="text-[10px] sm:text-xs text-[#f5eddc]/60 mt-1">
+                    {currentCollection.hours}
+                  </div>
                 </div>
               </div>
 
@@ -234,20 +250,24 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
                 </div>
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() => scrollCategories('left')}
+                    onClick={() => scrollCategories("left")}
                     disabled={!canScrollLeft}
-                    className={`h-8 w-8 sm:h-10 sm:w-10 rounded-full border border-[#2d1a11] flex items-center justify-center transition ${canScrollLeft ? 'bg-[#120a07] hover:bg-[#1c0a05]' : 'bg-[#120a07]/40 opacity-50 cursor-not-allowed'
-                      }`}
+                    className={`h-8 w-8 sm:h-10 sm:w-10 rounded-full border border-[#2d1a11] flex items-center justify-center transition ${
+                      canScrollLeft
+                        ? "bg-[#120a07] hover:bg-[#1c0a05]"
+                        : "bg-[#120a07]/40 opacity-50 cursor-not-allowed"
+                    }`}
                   >
                     <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4 text-[#f5eddc]" />
                   </button>
                   <button
-                    onClick={() => scrollCategories('right')}
+                    onClick={() => scrollCategories("right")}
                     disabled={!canScrollRight}
-                    className={`h-8 w-8 sm:h-10 sm:w-10 rounded-full border border-[#2d1a11] flex items-center justify-center transition ${canScrollRight
-                      ? 'bg-[#120a07] hover:bg-[#1c0a05]'
-                      : 'bg-[#120a07]/40 opacity-50 cursor-not-allowed'
-                      }`}
+                    className={`h-8 w-8 sm:h-10 sm:w-10 rounded-full border border-[#2d1a11] flex items-center justify-center transition ${
+                      canScrollRight
+                        ? "bg-[#120a07] hover:bg-[#1c0a05]"
+                        : "bg-[#120a07]/40 opacity-50 cursor-not-allowed"
+                    }`}
                   >
                     <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 text-[#f5eddc]" />
                   </button>
@@ -261,8 +281,14 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
               </div>
               <div className="relative flex-1 min-w-0">
                 <div className="mb-3 flex justify-between text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.35em] uppercase text-[#f5eddc]/60">
-                  <span>{searchActive ? 'Search results' : 'Browse categories'}</span>
-                  {!searchActive && <span className="hidden xs:inline-block">{activeCategory}</span>}
+                  <span>
+                    {searchActive ? "Search results" : "Browse categories"}
+                  </span>
+                  {!searchActive && (
+                    <span className="hidden xs:inline-block">
+                      {activeCategory}
+                    </span>
+                  )}
                   {searchActive && <span>{filteredItems.length} items</span>}
                 </div>
                 <div
@@ -276,13 +302,15 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
                         <button
                           key={category}
                           onClick={() => setActiveCategory(category)}
-                          className={`relative pb-2 sm:pb-3 px-3 sm:px-4 md:px-5 text-base sm:text-lg font-semibold tracking-widest uppercase whitespace-nowrap transition ${isActive ? 'text-[#f5eddc]' : 'text-[#f5eddc]/40'
-                            }`}
+                          className={`relative pb-2 sm:pb-3 px-3 sm:px-4 md:px-5 text-base sm:text-lg font-semibold tracking-widest uppercase whitespace-nowrap transition ${
+                            isActive ? "text-[#f5eddc]" : "text-[#f5eddc]/40"
+                          }`}
                         >
                           {category}
                           <span
-                            className={`absolute left-0 right-0 -bottom-0.5 h-0.5 transition ${isActive ? 'bg-[#c87534]' : 'bg-transparent'
-                              }`}
+                            className={`absolute left-0 right-0 -bottom-0.5 h-0.5 transition ${
+                              isActive ? "bg-[#c87534]" : "bg-transparent"
+                            }`}
                           />
                         </button>
                       );
@@ -298,10 +326,11 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
         {searchActive && (
           <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-[#2d1a11] bg-[#120a07] px-4 py-3 sm:px-5 sm:py-4 text-sm text-[#f5eddc]/80">
             <span>
-              Showing {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'} for “{searchTerm}”
+              Showing {filteredItems.length}{" "}
+              {filteredItems.length === 1 ? "item" : "items"} for “{searchTerm}”
             </span>
             <button
-              onClick={() => setSearchTerm('')}
+              onClick={() => setSearchTerm("")}
               className="text-[#c87534] underline-offset-4 hover:underline"
             >
               Clear search
@@ -328,10 +357,16 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
                   <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-black/80 to-transparent">
                     <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-1">
                       <div>
-                        <h3 className="text-base sm:text-lg font-bold text-white">{item.name}</h3>
-                        <p className="text-xs sm:text-sm text-white/80 mt-1">{item.description}</p>
+                        <h3 className="text-base sm:text-lg font-bold text-white">
+                          {item.name}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-white/80 mt-1">
+                          {item.description}
+                        </p>
                       </div>
-                      <span className="text-amber-200 text-base sm:text-lg font-semibold">${item.price.toFixed(2)}</span>
+                      <span className="text-amber-200 text-base sm:text-lg font-semibold">
+                        ${item.price.toFixed(2)}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -350,21 +385,25 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
         ) : (
           <div className="text-center py-8 sm:py-12 bg-[#120a07] rounded-xl border border-[#2d1a11]">
             <p className="text-[#f5eddc]/70 mb-4 px-4">
-              {searchActive
-                ? <>No items match “{searchTerm}”.</>
-                : <>No items available in {activeCategory} right now.</>}
+              {searchActive ? (
+                <>No items match “{searchTerm}”.</>
+              ) : (
+                <>No items available in {activeCategory} right now.</>
+              )}
             </p>
             <Button
-              onClick={() => (searchActive ? setSearchTerm('') : setActiveCategory(categoryTabs[0]))}
+              onClick={() =>
+                searchActive
+                  ? setSearchTerm("")
+                  : setActiveCategory(categoryTabs[0])
+              }
               variant="outline"
               className="border-[#c87534] text-[#f5eddc] text-sm sm:text-base px-4 py-2 sm:px-6 sm:py-3"
             >
-              {searchActive ? 'Clear Search' : 'Back to First Category'}
+              {searchActive ? "Clear Search" : "Back to First Category"}
             </Button>
           </div>
         )}
-
-
       </div>
     </section>
   );
@@ -372,7 +411,6 @@ const Menu = ({ onCartUpdate }: MenuProps) => {
 
 export default Menu;
 
-export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
-export const preferredRegion = 'auto';
-
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+export const preferredRegion = "auto";

@@ -3,7 +3,7 @@ export type MenuCategory =
   | 'Burgers'
   | 'Rolls'
   | 'Frankies'
-  | 'Biriyani'
+  | 'Biryani'
   | 'Curries'
   | 'Snacks'
   | 'Mandi'
@@ -88,22 +88,22 @@ export const menuItems: MenuItem[] = [
   },
   
   
-  // Biriyani
+  // Biryani
   {
     id: 9,
     name: 'Hyderabadi Biryani',
     price: 12.99,
     description: 'Fragrant rice layered with tender meat.',
     image: '/images/Hyderabadi Biryani.jpg',
-    category: 'Biriyani',
+    category: 'Biryani',
   },
   {
     id: 10,
     name: 'Veg Biryani',
     price: 10.99,
     description: 'Flavorful rice with mixed vegetables.',
-    image: '/images/vegbiriyani.png',
-    category: 'Biriyani',
+    image: '/images/vegbiryani.png',
+    category: 'Biryani',
   },
   
   // Curries
