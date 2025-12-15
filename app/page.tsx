@@ -1,6 +1,6 @@
 "use client";
 export const dynamic = "force-dynamic";
-
+import { menuItems } from "@/app/data/menuItems";
 import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -706,7 +706,6 @@ export default function Page() {
     <div className="min-h-screen bg-[#050302] text-[#f5eddc]">
       {/* Use the Navbar component */}
       <Navbar cartCount={cartCount} />
-
       {/* HERO */}
       <Section
         id="home"
@@ -864,7 +863,6 @@ export default function Page() {
           }
         `}</style>
       </Section>
-
       {/* MARQUEE - Hidden on mobile, visible on md screens and up */}
       {/* <div className="hidden md:block relative overflow-hidden bg-[#120a07]">
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#120a07] via-transparent to-[#120a07] z-10" />
@@ -877,7 +875,6 @@ export default function Page() {
           <span className="mx-4 md:mx-8">Vada Pav</span>
           <span className="mx-4 md:mx-8">Chicken 65</span>
           <span className="mx-4 md:mx-8">Kulfi & Falooda</span> */}
-
       {/* Duplicate items for seamless loop - hidden on mobile */}
       {/* <span className="hidden md:inline-block mx-4 md:mx-8">
             Irani CHAI
@@ -901,7 +898,6 @@ export default function Page() {
           </span>
         </div>
       </div> */}
-
       <div className="relative overflow-hidden bg-[#120a07]">
         {/* fade edges */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#120a07] via-transparent to-[#120a07] z-10" />
@@ -933,9 +929,8 @@ export default function Page() {
           </div>
         </div>
       </div>
-
-      {/* TODAY'S SPECIAL */}
-      <Section id="specials" className="bg-[#0b0503]">
+      TODAY'S SPECIAL
+      {/* <Section id="specials" className="bg-[#0b0503]">
         <Container>
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#f5eddc] mb-4">
@@ -948,7 +943,7 @@ export default function Page() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Special Item 1 */}
+            
             <div className="bg-[#120a07] rounded-2xl overflow-hidden border border-[#2d1a11] shadow-lg hover:shadow-xl transition-all duration-300">
               <div className="relative h-48">
                 <Image
@@ -978,7 +973,7 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Special Item 2 */}
+           
             <div className="bg-[#120a07] rounded-2xl overflow-hidden border border-[#2d1a11] shadow-lg hover:shadow-xl transition-all duration-300">
               <div className="relative h-48">
                 <Image
@@ -1008,7 +1003,7 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Special Item 3 */}
+            
             <div className="bg-[#120a07] rounded-2xl overflow-hidden border border-[#2d1a11] shadow-lg hover:shadow-xl transition-all duration-300">
               <div className="relative h-48">
                 <Image
@@ -1038,13 +1033,89 @@ export default function Page() {
             </div>
           </div>
         </Container>
-      </Section>
+      </Section> */}
+      {/* TODAY'S SPECIAL */}
+      <Section id="specials" className="bg-[#0b0503]">
+        <Container>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#f5eddc] mb-4">
+              Today&apos;s Special
+            </h2>
+            <p className="text-[#f5eddc]/80 max-w-2xl mx-auto">
+              Discover our chef&apos;s special creations for the day, crafted
+              with the finest ingredients and authentic flavors.
+            </p>
+          </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {menuItems
+              .filter((item) => item.special)
+              .slice(0, 3) // Optional: Limit to first 3 specials to keep layout clean
+              .map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-[#120a07] rounded-2xl overflow-hidden border border-[#2d1a11] shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col"
+                >
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={item.image}
+                      alt={`Special ${item.name}`}
+                      fill
+                      className="object-cover"
+                    />
+                    {/* Optional: Add a 'Special' Badge */}
+                    <div className="absolute top-4 right-4 bg-amber-500 text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                      Special
+                    </div>
+                  </div>
+
+                  <div className="p-6 flex flex-col flex-1">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="text-xl font-bold text-[#f5eddc]">
+                        {item.name}
+                      </h3>
+                      <div className="text-right">
+                        {/* Show original price if it exists */}
+                        {item.originalPrice &&
+                          item.originalPrice > item.price && (
+                            <span className="block text-xs text-[#f5eddc]/60 line-through">
+                              ${item.originalPrice.toFixed(2)}
+                            </span>
+                          )}
+                        <span className="text-amber-200 font-bold text-lg">
+                          ${item.price.toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+
+                    <p className="text-[#f5eddc]/80 mb-6 flex-1">
+                      {item.description}
+                    </p>
+
+                    <Button
+                      // Assuming your addToCart function takes (id, name) based on your snippet
+                      onClick={() => addToCart(item.id, item.name)}
+                      className="w-full bg-gradient-to-r from-[#f0a35c] to-[#d97a3a] hover:from-[#f5b97a] hover:to-[#e08a4a] text-black font-semibold mt-auto"
+                    >
+                      Add to Cart
+                    </Button>
+                  </div>
+                </div>
+              ))}
+          </div>
+
+          {/* Fallback if no specials are marked in data */}
+          {menuItems.filter((item) => item.special).length === 0 && (
+            <div className="text-center text-[#f5eddc]/60 italic">
+              Check back tomorrow for new daily specials!
+            </div>
+          )}
+        </Container>
+      </Section>
       {/* MENU SECTION */}
       <Section id="menu" className="bg-[#0b0503]">
         <Menu onCartUpdate={() => setCartCount(getCartCount())} />
       </Section>
-
       {/* GALLERY */}
       <Section id="moments" className="bg-[#120a07]">
         <Container>
@@ -1096,7 +1167,6 @@ export default function Page() {
           </div>
         </Container>
       </Section>
-
       {/* Floating Catering Button - Mobile Only */}
       <div className="fixed bottom-6 right-6 z-50 lg:hidden">
         <Link
@@ -1112,17 +1182,14 @@ export default function Page() {
           )}
         </Link>
       </div>
-
       {/* TESTIMONIALS */}
       <Section id="testimonials" className="bg-[#0b0503]">
         <TestimonialsCarousel />
       </Section>
-
       {/* LOCATION SECTION */}
       <Section id="location" className="bg-[#120a07]">
         <LocationSection />
       </Section>
-
       {/* CONTACT & CATERING SECTION */}
       <Section id="write-to-us" className="bg-[#0b0503]">
         <Container>
@@ -1207,7 +1274,6 @@ export default function Page() {
           </div>
         </Container>
       </Section>
-
       {/* FOOTER */}
       <footer className="bg-[#120a07] text-[#f5eddc] border-t border-[#2d1a11]">
         <Container className="py-10 grid md:grid-cols-3 gap-8">
@@ -1323,7 +1389,6 @@ export default function Page() {
           </Container>
         </div>
       </footer>
-
       {/* KEYFRAMES */}
       <style>{`
         @keyframes marquee {
